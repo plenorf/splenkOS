@@ -20,7 +20,7 @@ char* strcat(char* dest, const char* src) {
 	return dest;
 }
 
-char *itoa_safe(int value, char *str, int base) {
+char *itoa(int value, char *str, int base) {
     const char *digits = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     int i = 0;
     int sign = 0;

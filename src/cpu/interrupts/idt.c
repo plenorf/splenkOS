@@ -1,10 +1,14 @@
 #include "idt.h"
 #include "../gdt.h"
 #include "../../util/logging.h"
+#include "../../libc/string.h"
 
 __attribute__((noreturn))
 void exception_handler(InterruptFrame* frame) {
     warn("EXCEPTION");
+
+    char buf[5];
+    warn(itoa(frame->int_no, buf, 16));
     //__asm__ volatile ("cli; hlt"); // Completely hangs the computer
 }
 
