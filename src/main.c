@@ -1,5 +1,8 @@
 #include <stdbool.h>
 #include <stddef.h>
+#include "flanterm/flanterm.h"
+#include "flanterm/flanterm_backends/fb.h"
+#include "gcc_functions.h"
 #include "limine.h"
 
 
@@ -58,12 +61,26 @@ void kmain(void) {
     struct limine_framebuffer *framebuffer = framebuffer_request.response->framebuffers[0];
     volatile uint32_t *fb_ptr = framebuffer->address;
 
-    // Note: we assume the framebuffer model is RGB with 32-bit pixels.
-    for (size_t y = 0; y < framebuffer->height; y++) {
-        for (size_t x = 0; x < framebuffer->width; x++) {
-            fb_ptr[y * framebuffer->pitch / 4 + x] = x+y; // Red color
-        }
-    }
+    // setup flanterm
+    struct flanterm_context *ft_ctx = flanterm_fb_init(
+        NULL,
+        NULL,
+        fb_ptr, framebuffer->width, framebuffer->height, framebuffer->pitch,
+        framebuffer->red_mask_size, framebuffer->red_mask_shift,
+        framebuffer->green_mask_size, framebuffer->green_mask_shift,
+        framebuffer->blue_mask_size, framebuffer->blue_mask_shift,
+        NULL,
+        NULL, NULL,
+        NULL, NULL,
+        NULL, NULL,
+        NULL, 0, 0, 1,
+        0, 0,
+        0
+    );
+
+    // display "Hello, World!"
+    const char message[] = "Hello, world!\n";
+    flanterm_write(ft_ctx, message, sizeof(message));
 
     // We're done, just hang...
     hcf();
