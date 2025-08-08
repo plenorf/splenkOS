@@ -8,7 +8,7 @@
 
 
 #define MIN_LOG_LEVEL DEBUG
-#include "logging.h"
+#include "util/logging.h"
 
 
 // Set the base revision to 3, this is recommended as this is the latest
@@ -66,7 +66,7 @@ void kmain(void) {
     struct limine_framebuffer *framebuffer = framebuffer_request.response->framebuffers[0];
 
     // setup flanterm
-    flanterm_context *ft_ctx = logging_init(framebuffer);
+    struct flanterm_context *ft_ctx = init_console(framebuffer);
     ok("Installing GDT...", ft_ctx);
 
     gdt_init();
