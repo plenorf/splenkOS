@@ -4,6 +4,10 @@
 #include "flanterm/flanterm_backends/fb.h"
 #include "gcc_functions.h"
 #include "limine.h"
+#include "gdt.h"
+
+
+#define MIN_LOG_LEVEL 
 
 
 // Set the base revision to 3, this is recommended as this is the latest
@@ -59,28 +63,18 @@ void kmain(void) {
 
     // Fetch the first framebuffer.
     struct limine_framebuffer *framebuffer = framebuffer_request.response->framebuffers[0];
-    volatile uint32_t *fb_ptr = framebuffer->address;
 
     // setup flanterm
-    struct flanterm_context *ft_ctx = flanterm_fb_init(
-        NULL,
-        NULL,
-        fb_ptr, framebuffer->width, framebuffer->height, framebuffer->pitch,
-        framebuffer->red_mask_size, framebuffer->red_mask_shift,
-        framebuffer->green_mask_size, framebuffer->green_mask_shift,
-        framebuffer->blue_mask_size, framebuffer->blue_mask_shift,
-        NULL,
-        NULL, NULL,
-        NULL, NULL,
-        NULL, NULL,
-        NULL, 0, 0, 1,
-        0, 0,
-        0
-    );
+    
 
     // display "Hello, World!"
     const char message[] = "Hello, world!\n";
     flanterm_write(ft_ctx, message, sizeof(message));
+
+    gdt_init();
+
+    const char message2[] = "GDT!!\n";
+    flanterm_write(ft_ctx, message2, sizeof(message2));
 
     // We're done, just hang...
     hcf();
