@@ -1,0 +1,7 @@
+image.iso
+image.hdd
+limine/*
+bin/*
+obj/*
+obj/src/*
+iso_root/*
