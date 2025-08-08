@@ -5,3 +5,5 @@ bin/*
 obj/*
 obj/src/*
 iso_root/*
+iso_root/boot/*
+limine
