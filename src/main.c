@@ -1,6 +1,6 @@
 #include <stdbool.h>
-#include "../include/gcc_functions.h"
-#include "../include/boot/limine.h"
+#include <stddef.h>
+#include "limine.h"
 
 
 // Set the base revision to 3, this is recommended as this is the latest
@@ -56,11 +56,13 @@ void kmain(void) {
 
     // Fetch the first framebuffer.
     struct limine_framebuffer *framebuffer = framebuffer_request.response->framebuffers[0];
+    volatile uint32_t *fb_ptr = framebuffer->address;
 
     // Note: we assume the framebuffer model is RGB with 32-bit pixels.
-    for (size_t i = 0; i < 100; i++) {
-        volatile uint32_t *fb_ptr = framebuffer->address;
-        fb_ptr[i * (framebuffer->pitch / 4) + i] = 0xffffff;
+    for (size_t y = 0; y < framebuffer->height; y++) {
+        for (size_t x = 0; x < framebuffer->width; x++) {
+            fb_ptr[y * framebuffer->pitch / 4 + x] = x+y; // Red color
+        }
     }
 
     // We're done, just hang...
