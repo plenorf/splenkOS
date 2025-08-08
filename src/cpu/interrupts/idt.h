@@ -2,6 +2,8 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+#define IDT_MAX_ENTRIES 32
+
 typedef struct {
 	uint16_t    isr_low;      // The lower 16 bits of the ISR's address
 	uint16_t    kernel_cs;    // The GDT segment selector that the CPU will load into CS before calling the ISR
@@ -21,10 +23,17 @@ __attribute__((aligned(0x10)))
 static idt_entry_t idt[256]; // Create an array of IDT entries; aligned for performance
 
 static idtr_t idtr;
-static bool vectors[256];
 
 extern void* isr_stub_table[];
 
-void exception_handler(void);
+typedef struct InterruptFrame
+{
+    uint64_t r11, r10, r9, r8;
+    uint64_t rsi, rdi, rdx, rcx, rax;
+    uint64_t int_no, err_code;
+    uint64_t rsp, rflags, cs, rip;
+}__attribute__((packed)) InterruptFrame;
+
+void exception_handler(InterruptFrame* frame);
 void idt_set_descriptor(uint8_t vector, void* isr, uint8_t flags);
 void idt_init(void);

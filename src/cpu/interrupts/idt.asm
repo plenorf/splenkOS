@@ -1,13 +1,47 @@
+%macro pushad 0
+    push rax      
+    push rcx
+    push rdx
+    push rdi
+    push rsi
+    push r8
+    push r9
+    push r10
+    push r11
+%endmacro
+
+%macro popad 0
+    pop r11
+    pop r10
+    pop r9
+    pop r8
+    pop rsi
+    pop rdi
+    pop rdx      
+    pop rcx
+    pop rax
+%endmacro
+
+isr_common_stub:
+    pushad
+    cld 
+    lea rdi, [rsp]
+    call exception_handler
+    popad
+    add rsp, 0x10 
+    iretq ; we're 64bit so we use iretq
+
 %macro isr_err_stub 1
 isr_stub_%+%1:
-    call exception_handler
-    iretq 
+    push %1
+    jmp isr_common_stub
 %endmacro
-; if writing for 64-bit, use iretq instead
+
 %macro isr_no_err_stub 1
 isr_stub_%+%1:
-    call exception_handler
-    iretq
+    push 0
+    push %1
+    jmp isr_common_stub
 %endmacro
 
 

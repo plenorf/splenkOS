@@ -13,17 +13,19 @@ typedef enum {
 
 #define MIN_LOG_LEVEL DEBUG
 
-// display a message to the system console with the specified log level.
-void logMsg(const char* message, LogLevel logLevel, struct flanterm_context *ft_ctx);
-// display a message to the system console with a log level of DEBUG.
-void debug(const char* message, struct flanterm_context *ft_ctx);
-// display a message to the system console with a log level of OK.
-void ok(const char* message, struct flanterm_context *ft_ctx);
-// display a message to the system console with a log level of INFO.
-void info(const char* message, struct flanterm_context *ft_ctx);
-// display a warning to the system console.
-void warn(const char* message, struct flanterm_context *ft_ctx);
-// display an error to the system console.
-void error(const char* message, struct flanterm_context *ft_ctx);
+static struct flanterm_context *ft_ctx = NULL;
 
-struct flanterm_context* init_console(struct limine_framebuffer *framebuffer);
+// display a message to the system console with the specified log level.
+void logMsg(const char* message, LogLevel logLevel);
+// display a message to the system console with a log level of DEBUG.
+void debug(const char* message);
+// display a message to the system console with a log level of OK.
+void ok(const char* message);
+// display a message to the system console with a log level of INFO.
+void info(const char* message);
+// display a warning to the system console.
+void warn(const char* message);
+// display an error to the system console.
+void error(const char* message);
+
+void init_console(struct limine_framebuffer *framebuffer);

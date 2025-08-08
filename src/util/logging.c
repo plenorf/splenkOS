@@ -1,7 +1,7 @@
 #include "logging.h"
 #include "libc/string.h"
 
-void logMsg(const char* message, LogLevel logLevel, struct flanterm_context *ft_ctx) {
+void logMsg(const char* message, LogLevel logLevel) {
     if (logLevel < MIN_LOG_LEVEL) return; // if the log level is below the minimum log level then we don't do anything
 
     // i am the efficient code wizard, do not question my ways
@@ -38,25 +38,25 @@ void logMsg(const char* message, LogLevel logLevel, struct flanterm_context *ft_
     flanterm_write(ft_ctx, dest, sizeof(dest));
 }
 
-void debug(const char* message, struct flanterm_context *ft_ctx) {
-    logMsg(message, DEBUG, ft_ctx);
+void debug(const char* message) {
+    logMsg(message, DEBUG);
 }
-void ok(const char* message, struct flanterm_context *ft_ctx) {
-    logMsg(message, OK, ft_ctx);
+void ok(const char* message) {
+    logMsg(message, OK);
 }
-void info(const char* message, struct flanterm_context *ft_ctx) {
-    logMsg(message, INFO, ft_ctx);
+void info(const char* message) {
+    logMsg(message, INFO);
 }
-void warn(const char* message, struct flanterm_context *ft_ctx) {
-    logMsg(message, WARNING, ft_ctx);
+void warn(const char* message) {
+    logMsg(message, WARNING);
 }
-void error(const char* message, struct flanterm_context *ft_ctx) {
-    logMsg(message, ERROR, ft_ctx);
+void error(const char* message) {
+    logMsg(message, ERROR);
 }
 
-struct flanterm_context* init_console(struct limine_framebuffer *framebuffer) {
+void init_console(struct limine_framebuffer *framebuffer) {
 	uint32_t *fb_ptr = framebuffer->address;
-    struct flanterm_context *ft_ctx = flanterm_fb_init(
+    struct flanterm_context* new_ctx = flanterm_fb_init(
         NULL,
         NULL,
         fb_ptr, framebuffer->width, framebuffer->height, framebuffer->pitch,
@@ -71,5 +71,5 @@ struct flanterm_context* init_console(struct limine_framebuffer *framebuffer) {
         0, 0,
         0
     );
-	return ft_ctx;
+    ft_ctx = new_ctx;
 }

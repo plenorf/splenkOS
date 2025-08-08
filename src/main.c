@@ -67,14 +67,14 @@ void kmain(void) {
     struct limine_framebuffer *framebuffer = framebuffer_request.response->framebuffers[0];
 
     // setup flanterm
-    struct flanterm_context *ft_ctx = init_console(framebuffer);
+    init_console(framebuffer);
 
-    ok("Initialising GDT...", ft_ctx);
+    ok("Initialising GDT...");
     gdt_init();
-    ok("Initialising IDT...", ft_ctx);
+    ok("Initialising IDT...");
     idt_init();
 
-    warn("Kernel has run out of work! Halting the computer...", ft_ctx);
+    warn("Kernel has run out of work! Halting the computer...");
 
     // We're done, just hang...
     hcf();
