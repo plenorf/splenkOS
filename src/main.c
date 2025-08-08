@@ -74,6 +74,9 @@ void kmain(void) {
     ok("Initialising IDT...");
     idt_init();
 
+    ok("Calling test interrupt!");
+    asm volatile ("int $0x10");
+
     warn("Kernel has run out of work! Halting the computer...");
 
     // We're done, just hang...
