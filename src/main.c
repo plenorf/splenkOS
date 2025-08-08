@@ -4,7 +4,8 @@
 #include "flanterm/flanterm_backends/fb.h"
 #include "gcc_functions.h"
 #include "limine.h"
-#include "gdt.h"
+#include "cpu/gdt.h"
+#include "cpu/interrupts/idt.h"
 
 
 #define MIN_LOG_LEVEL DEBUG
@@ -67,9 +68,13 @@ void kmain(void) {
 
     // setup flanterm
     struct flanterm_context *ft_ctx = init_console(framebuffer);
-    ok("Installing GDT...", ft_ctx);
 
+    ok("Initialising GDT...", ft_ctx);
     gdt_init();
+    ok("Initialising IDT...", ft_ctx);
+    idt_init();
+
+    warn("Kernel has run out of work! Halting the computer...", ft_ctx);
 
     // We're done, just hang...
     hcf();
