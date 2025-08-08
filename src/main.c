@@ -7,7 +7,8 @@
 #include "gdt.h"
 
 
-#define MIN_LOG_LEVEL 
+#define MIN_LOG_LEVEL DEBUG
+#include "logging.h"
 
 
 // Set the base revision to 3, this is recommended as this is the latest
@@ -65,16 +66,10 @@ void kmain(void) {
     struct limine_framebuffer *framebuffer = framebuffer_request.response->framebuffers[0];
 
     // setup flanterm
-    
-
-    // display "Hello, World!"
-    const char message[] = "Hello, world!\n";
-    flanterm_write(ft_ctx, message, sizeof(message));
+    flanterm_context *ft_ctx = logging_init(framebuffer);
+    ok("Installing GDT...", ft_ctx);
 
     gdt_init();
-
-    const char message2[] = "GDT!!\n";
-    flanterm_write(ft_ctx, message2, sizeof(message2));
 
     // We're done, just hang...
     hcf();
