@@ -88,7 +88,7 @@ void kmain(void) {
     ok("Initialising IDT...");
     idt_init();
     ok("Remapping PIC...");
-    pic_remap(PIC1, PIC1);
+    PIC_remap(PIC1, PIC1);
 
     for (;;) {
         
