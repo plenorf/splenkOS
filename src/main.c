@@ -6,6 +6,7 @@
 #include "limine.h"
 #include "cpu/gdt.h"
 #include "cpu/interrupts/idt.h"
+#include "libc/string.h"
 
 
 #define MIN_LOG_LEVEL DEBUG
@@ -69,6 +70,18 @@ void kmain(void) {
     // setup flanterm
     init_console(framebuffer);
 
+    // print out framebuffer resolution
+    char xBuffer[8];
+    char yBuffer[8];
+    char finalBuf[128] = "Framebuffer resolution: \0";
+    itoa(framebuffer->width, xBuffer, 10);
+    itoa(framebuffer->height, yBuffer, 10);
+    strcat(finalBuf, xBuffer);
+    strcat(finalBuf, "x");
+    strcat(finalBuf, yBuffer);
+    info(finalBuf);
+
+    // do setup
     ok("Initialising GDT...");
     gdt_init();
     ok("Initialising IDT...");
