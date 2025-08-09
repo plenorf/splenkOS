@@ -1,5 +1,6 @@
 #include "logging.h"
 #include "libc/string.h"
+#include "serial.h"
 
 void logMsg(const char* message, LogLevel logLevel) {
     if (logLevel < MIN_LOG_LEVEL) return; // if the log level is below the minimum log level then we don't do anything
@@ -36,6 +37,8 @@ void logMsg(const char* message, LogLevel logLevel) {
 
     // go forth my beautiful creation and wreak havoc
     flanterm_write(ft_ctx, dest, sizeof(dest));
+
+    write_serial_string(strcat(dest, "\r"));
 }
 
 void debug(const char* message) {
@@ -76,4 +79,11 @@ void init_console(struct limine_framebuffer *framebuffer) {
         0
     );
     ft_ctx = new_ctx;
+
+    bool serialInitSuccess = init_serial();
+    if (serialInitSuccess) {
+        ok("Serial port initialized successfully.");
+    } else {
+        error("Failed to initialize serial port. No output will be sent to serial.");
+    }
 }

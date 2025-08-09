@@ -87,8 +87,12 @@ void kmain(void) {
     ok("Initialising IDT...");
     idt_init();
 
-    warn("Kernel has run out of work! Halting the computer...");
+    for (;;) {
+        
+    }
+
+    //warn("Kernel has run out of work! Halting the computer...");
 
     // We're done, just hang...
-    hcf();
+    //hcf();
 }
