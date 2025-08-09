@@ -5,7 +5,6 @@
 
 extern void* isr_stub_table[];
 
-__attribute__((noreturn))
 void exception_handler(InterruptFrame* frame) {
     char buf[5];
     warn("UNHANDLED INTERRUPT");
@@ -14,6 +13,7 @@ void exception_handler(InterruptFrame* frame) {
     print("\n\t- Error Code : ");
     print(itoa(frame->err_code, buf, 10));
     print("\n");
+    return;
 
     //print("Halting CPU...\n");
     //asm volatile ("hlt");
