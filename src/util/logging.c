@@ -84,6 +84,6 @@ void init_console(struct limine_framebuffer *framebuffer) {
     if (serialInitSuccess) {
         ok("Serial port initialized successfully.");
     } else {
-        error("Failed to initialize serial port. No output will be sent to serial.");
+        warn("Failed to initialize serial port. No output will be sent to serial.");
     }
 }
