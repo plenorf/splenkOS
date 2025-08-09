@@ -1,4 +1,5 @@
 #include "serial.h"
+#include "../cpu/io.h"
 
 bool init_serial()
 {

@@ -72,7 +72,7 @@ void IRQ_clear_mask(uint8_t IRQline) {
 }
 
 //Lets us know which interrupts are getting served and which are raised
-static uint16_t __pic_get_irq_reg(int ocw3)
+uint16_t __pic_get_irq_reg(int ocw3)
 {
     outb(PIC1_COMMAND, ocw3);
     outb(PIC2_COMMAND, ocw3);
