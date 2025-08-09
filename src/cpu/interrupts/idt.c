@@ -13,10 +13,7 @@ void exception_handler(InterruptFrame* frame) {
     print("\n\t- Error Code : ");
     print(itoa(frame->err_code, buf, 10));
     print("\n");
-    return;
-
-    //print("Halting CPU...\n");
-    //asm volatile ("hlt");
+    return; // VERY IMPORTANT THAT THIS FUNCTION RETURNS
 }
 
 void idt_set_descriptor(uint8_t vector, void* isr, uint8_t flags) {
@@ -32,23 +29,16 @@ void idt_set_descriptor(uint8_t vector, void* isr, uint8_t flags) {
 }
 
 void idt_init(void) {
+    // set the start position and length of the idt in the pointer
 	idtr.base = (uintptr_t)&idt[0];
     idtr.limit = (uint16_t)sizeof(idt_entry_t) * IDT_MAX_ENTRIES - 1;
 
-    print("\tIDTR INFO:\n\t\t- BASE: 0x");
-    char buf[16];
-    print(itoa((int)idtr.base, buf, 16));
-    print("\n\t\t- LIMIT: 0x");
-    print(itoa((int)idtr.limit, buf, 16));
-    print("\n");
-
+    // open all idt gates
     for (uint8_t vector = 0; vector < IDT_MAX_ENTRIES-1; vector++) {
         idt_set_descriptor(vector, isr_stub_table[vector], 0x8E);
     }
 
-    debug("All IDT gates open!");
-    debug("Loading IDTR...");
-
+    // load the idt
     __asm__ volatile ("lidt %0" : : "m"(idtr)); // load the new IDT
     __asm__ volatile ("sti"); // set the interrupt flag
 }
