@@ -1,6 +1,9 @@
 //Idk why we need so many definitions but hey
 
 #pragma once
+#include <stdint.h>
+
+
 #define PIC1    0x20
 #define PIC2    0xA0
 #define PIC1_COMMAND PIC1
@@ -22,3 +25,13 @@
 
 #define PIC_READ_IRR 0x0a 
 #define PIC_READ_ISR 0x0b
+
+
+void PIC_sendEOI(uint8_t irq);
+void PIC_remap(int offset1, int offset2);
+void pic_disable(void);
+void IRQ_mask(uint8_t IRQline);
+void IRQ_clear_mask(uint8_t IRQline);
+static uint16_t __pic_get_irq_reg(int ocw3);
+uint16_t PIC_get_irr(void);
+uint16_t pic_get_isr(void);

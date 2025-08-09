@@ -7,6 +7,7 @@
 #include "cpu/gdt.h"
 #include "cpu/interrupts/idt.h"
 #include "libc/string.h"
+#include "cpu/interrupts/pic.h"
 
 
 #define MIN_LOG_LEVEL DEBUG
@@ -86,6 +87,8 @@ void kmain(void) {
     gdt_init();
     ok("Initialising IDT...");
     idt_init();
+    ok("Remapping PIC...");
+    pic_remap();
 
     for (;;) {
         

@@ -9,3 +9,8 @@ uint8_t inb(uint16_t port) {
 	asm volatile ("inb %1, %0" : "=a"(ret) : "dN"(port));
 	return ret;
 }
+
+void io_wait(void)
+{
+	inb(0x80);
+}
