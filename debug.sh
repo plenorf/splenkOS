@@ -1,1 +1,1 @@
-qemu-system-x86_64 -drive format=raw,file=image.iso --no-reboot --no-shutdown -d int
+qemu-system-x86_64 -drive format=raw,file=image.iso --no-reboot --no-shutdown -d int -M accel=tcg,smm=off -s -S

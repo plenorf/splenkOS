@@ -81,7 +81,7 @@ static const uint32_t col256[] = {
 #define CHARSET_DEC_SPECIAL 1
 
 void flanterm_context_reinit(struct flanterm_context *ctx) {
-    ctx->tab_size = 8;
+    ctx->tab_size = 4;
     ctx->autoflush = true;
     ctx->cursor_enabled = true;
     ctx->scroll_enabled = true;
