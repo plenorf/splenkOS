@@ -28,4 +28,6 @@ void warn(const char* message);
 // display an error to the system console.
 void error(const char* message);
 
+void print(const char* message);
+
 void init_console(struct limine_framebuffer *framebuffer);

@@ -54,6 +54,10 @@ void error(const char* message) {
     logMsg(message, ERROR);
 }
 
+void print(const char* message) {
+    flanterm_write(ft_ctx, message, strlen(message));
+}
+
 void init_console(struct limine_framebuffer *framebuffer) {
 	uint32_t *fb_ptr = framebuffer->address;
     struct flanterm_context* new_ctx = flanterm_fb_init(

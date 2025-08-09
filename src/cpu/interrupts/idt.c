@@ -3,13 +3,17 @@
 #include "../../util/logging.h"
 #include "../../libc/string.h"
 
+extern void* isr_stub_table[];
+
 __attribute__((noreturn))
 void exception_handler(InterruptFrame* frame) {
-    warn("EXCEPTION");
-
     char buf[5];
-    warn(itoa(frame->int_no, buf, 16));
-    //__asm__ volatile ("cli; hlt"); // Completely hangs the computer
+    warn("UNHANDLED INTERRUPT");
+    print("\t- Interrupt #: ");
+    print(itoa(frame->int_no, buf, 10));
+    print("\n\t- Error Code : ");
+    print(itoa(frame->err_code, buf, 10));
+    print("\n");
 }
 
 void idt_set_descriptor(uint8_t vector, void* isr, uint8_t flags) {
@@ -28,11 +32,8 @@ void idt_init(void) {
 	idtr.base = (uintptr_t)&idt[0];
     idtr.limit = (uint16_t)sizeof(idt_entry_t) * IDT_MAX_ENTRIES - 1;
 
-    for (uint8_t vector = 0; vector < 32; vector++) {
+    for (uint8_t vector = 0; vector < IDT_MAX_ENTRIES; vector++) {
         idt_set_descriptor(vector, isr_stub_table[vector], 0x8E);
-    }
-    for (uint8_t vector = 32; vector < 255; vector++) {
-        idt_set_descriptor(vector, isr_stub_table[vector-32], 0x8E);
     }
 
     __asm__ volatile ("lidt %0" : : "m"(idtr)); // load the new IDT

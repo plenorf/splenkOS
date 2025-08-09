@@ -2,7 +2,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-#define IDT_MAX_ENTRIES 32
+#define IDT_MAX_ENTRIES 256
 
 typedef struct {
 	uint16_t    isr_low;      // The lower 16 bits of the ISR's address
@@ -23,8 +23,6 @@ __attribute__((aligned(0x10)))
 static idt_entry_t idt[256]; // Create an array of IDT entries; aligned for performance
 
 static idtr_t idtr;
-
-extern void* isr_stub_table[];
 
 typedef struct InterruptFrame
 {
