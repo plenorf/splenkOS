@@ -1,6 +1,5 @@
 #include "driver.h"
 #include "../cpu/interrupts/irq.h"
-#include "../util/logging.h"
 
 #define PIT_CHANNEL0 0x40
 #define PIT_COMMAND  0x43
