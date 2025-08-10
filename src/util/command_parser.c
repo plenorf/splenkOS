@@ -11,7 +11,7 @@ void parseCommand(char *input, struct limine_framebuffer* framebuffer) {
 	char *command = strtok(input, " ");
 	if (command) {
 		if (strcmp(command, "help") == 0) {
-			print("Available commands: help time sleep echo splenkfetch\n");
+			print("Available commands: help time sleep echo splenkfetch halt\n");
 		} else if (strcmp(command, "echo") == 0) {
 			char *token = strtok(NULL, " ");
 			while (token != NULL)
@@ -40,6 +40,11 @@ void parseCommand(char *input, struct limine_framebuffer* framebuffer) {
 			print(" ms...");
 			sleep(duration);
 			printChar('\n');
+		} else if (strcmp(command, "halt") == 0) {
+			print("Bye bye computer!!!!!\n");
+			for (;;) {
+				asm ("hlt");
+			}
 		} else if (strcmp(command, "splenkfetch") == 0) {
 			char uptimeBuf[32];
 			
