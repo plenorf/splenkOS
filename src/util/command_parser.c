@@ -1,5 +1,6 @@
 #include "command_parser.h"
 #include "../libc/string.h"
+#include "logging.h"
 
 void parseCommand(char *input) {
 	char *command = strtok(input, " ");
