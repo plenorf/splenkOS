@@ -3,9 +3,8 @@
 #include "../util/logging.h"
 #include "../cpu/io.h"
 
-char readchar();
+char read_char();
 char *input();
-char getChar();
 void keyboard_handler();
 
 #define KEYBOARD_IRQ 0x21
@@ -26,6 +25,24 @@ char get_char() {
 int keyboard_init() {
     register_interrupt_handler(KEYBOARD_IRQ, keyboard_interrupt_handler);
     return 0;
+}
+
+char read_char()
+{
+    int run = 1;
+    char out 0;
+    while (run)
+    {
+        if (inportb(0x64) & 0x1)
+        {
+            if (inportb(0x60) == 0x2A && !isShift)
+                isShift = 1;
+            else if (inportb(0x60) == 0xAA && isShift)
+                isShift = 0;
+            if (!isShift)
+                out = keycode[inportb(0x60)];
+        }
+    }
 }
 
 Driver keyboardDriver = {
