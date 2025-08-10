@@ -8,6 +8,7 @@
 #include "cpu/interrupts/idt.h"
 #include "libc/string.h"
 #include "cpu/interrupts/pic.h"
+#include "drivers/timer.h"
 
 
 #define MIN_LOG_LEVEL DEBUG
@@ -83,6 +84,8 @@ void kmain(void) {
     info(finalBuf);
 
     // do setup
+    ok("Loading drivers...");
+    timer_init();
     ok("Initialising GDT...");
     gdt_init();
     ok("Initialising IDT...");

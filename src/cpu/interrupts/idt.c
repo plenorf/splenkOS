@@ -2,19 +2,9 @@
 #include "../gdt.h"
 #include "../../util/logging.h"
 #include "../../libc/string.h"
+#include "pic.h"
 
 extern void* isr_stub_table[];
-
-void exception_handler(InterruptFrame* frame) {
-    char buf[5];
-    warn("UNHANDLED INTERRUPT");
-    print("\t- Interrupt #: ");
-    print(itoa(frame->int_no, buf, 10));
-    print("\n\t- Error Code : ");
-    print(itoa(frame->err_code, buf, 10));
-    print("\n");
-    return; // VERY IMPORTANT THAT THIS FUNCTION RETURNS
-}
 
 void idt_set_descriptor(uint8_t vector, void* isr, uint8_t flags) {
     idt_entry_t* descriptor = &idt[vector];

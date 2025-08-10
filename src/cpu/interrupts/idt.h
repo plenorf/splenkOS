@@ -1,6 +1,7 @@
 #pragma once
 #include <stdint.h>
 #include <stdbool.h>
+#include "../../drivers/driver.h"
 
 #define IDT_MAX_ENTRIES 256
 
@@ -24,14 +25,5 @@ static idt_entry_t idt[256]; // Create an array of IDT entries; aligned for perf
 
 static idtr_t idtr;
 
-typedef struct InterruptFrame
-{
-    uint64_t r11, r10, r9, r8;
-    uint64_t rsi, rdi, rdx, rcx, rax;
-    uint64_t int_no, err_code;
-    uint64_t rsp, rflags, cs, rip;
-}__attribute__((packed)) InterruptFrame;
-
-void exception_handler(InterruptFrame* frame);
 void idt_set_descriptor(uint8_t vector, void* isr, uint8_t flags);
 void idt_init(void);

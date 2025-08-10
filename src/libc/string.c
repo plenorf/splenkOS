@@ -70,3 +70,9 @@ char *itoa(int value, char *str, int base) {
 
     return str;
 }
+
+char *strcpy(char *dest, const char *src) {
+    char *d = dest;
+    while ((*d++ = *src++)); // copy until null terminator (0) is copied
+    return dest;
+}
