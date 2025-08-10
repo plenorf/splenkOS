@@ -224,7 +224,7 @@ void kmain(void) {
         char userInput[255];
         input(userInput);
 
-        parseCommand(userInput);
+        parseCommand(userInput, framebuffer);
 
         userInput[0] = '\0';
 

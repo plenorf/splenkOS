@@ -1,3 +1,5 @@
+#ifndef TIMER_DRIVER_H
+#define TIMER_DRIVER_H
 #include "../hardware/driver.h"
 #include "../cpu/interrupts/irq.h"
 #include "../util/logging.h"
@@ -12,7 +14,7 @@
 
 static uint64_t msSinceBoot = 0;
 
-void timer_interrupt_handler(InterruptFrame* frame) {
+static void timer_interrupt_handler(InterruptFrame* frame) {
 	msSinceBoot += 1;
 }
 
@@ -29,7 +31,7 @@ void sleep(uint64_t ms) {
 	}
 }
 
-int timer_init() {
+static int timer_init() {
 	uint32_t freq = 1000; // 1000 Hz
 	uint16_t divisor = PIT_FREQUENCY / freq;
 	outb(PIT_COMMAND, 0x36);           // Channel 0, low/high byte, mode 3
@@ -40,8 +42,9 @@ int timer_init() {
 	return 0;
 }
 
-Driver timerDriver = {
+static Driver timerDriver = {
 	.name = "Timer",
 	.init = timer_init,
 	.shutdown = NULL
 };
+#endif // ! TIMER_DRIVER_H

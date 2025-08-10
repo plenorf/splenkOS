@@ -9,3 +9,4 @@ char *strcpy(char *dest, const char *src);
 int strcmp(const char *str1, const char *str2);
 char *strtok(char *str, const char *delim);
 char *strchr(const char *str, int ch);
+int atoi(char *p);
