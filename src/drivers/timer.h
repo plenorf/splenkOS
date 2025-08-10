@@ -22,3 +22,9 @@ static int timer_init() {
 	register_interrupt_handler(0x20, timer_interrupt_handler);
 	return 0;
 }
+
+Driver timerDriver = {
+	.name = "Timer",
+	.init = timer_init,
+	.shutdown = NULL
+};

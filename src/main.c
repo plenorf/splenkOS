@@ -84,8 +84,9 @@ void kmain(void) {
     info(finalBuf);
 
     // do setup
-    ok("Loading drivers...");
-    timer_init();
+    ok("Starting drivers...");
+    register_driver(timerDriver);
+    start_drivers();
     ok("Initialising GDT...");
     gdt_init();
     ok("Initialising IDT...");
