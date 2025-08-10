@@ -3,6 +3,7 @@
 #include "../util/logging.h"
 #include "../util/serial.h"
 #include "../libc/string.h"
+#include "../cpu/io.h"
 
 #define PIT_CHANNEL0 0x40
 #define PIT_COMMAND  0x43
