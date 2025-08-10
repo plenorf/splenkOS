@@ -205,9 +205,13 @@ void kmain(void) {
     ok("Remapping PIC...");
     PIC_remap(PIC1, PIC1);
 
+    printChar('\n');
     while (1)
     {
-        input();
+        print("> ");
+        char* userInput = input();
+        print(userInput);
+        printChar('\n');
     }
     
 

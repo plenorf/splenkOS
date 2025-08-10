@@ -21,6 +21,7 @@ char get_char() {
     uint8_t scancode = inb(0x60);
     if (scancode < 60 && scancode > 0 && keycode[scancode] > 0 && keycode[scancode] < 254)
         return keycode[scancode];
+    return 0;
 }
 
 int keyboard_init() {
@@ -29,7 +30,7 @@ int keyboard_init() {
 }
 
 char *input() {
-    char out[255];
+    static char out[255] = {};
     int index = 0;
     char currentChar = 0;
 
