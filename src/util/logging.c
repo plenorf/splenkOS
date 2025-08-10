@@ -57,6 +57,11 @@ void error(const char* message) {
     logMsg(message, ERROR);
 }
 
+void printChar(char c) {
+    char buf[2] = {c, '\0'};
+    flanterm_write(ft_ctx, buf, 2);
+}
+
 void print(const char* message) {
     flanterm_write(ft_ctx, message, strlen(message));
 }

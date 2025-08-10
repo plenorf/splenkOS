@@ -28,6 +28,48 @@ int keyboard_init() {
     return 0;
 }
 
+char *input() {
+    char out[255];
+    int index = 0;
+    char currentChar = 0;
+
+    while ((currentChar = read_char()) != '\n')
+    {
+        if (index == 254) {
+            if (currentChar == '\b') {
+                if (index > 0) {
+                    out[index] = 0;
+                    out[index - 1] = '\0';
+                    index -= 1;
+                    print("\b \b");
+                }
+            }
+            continue;
+        }
+
+        out[index] = currentChar;
+        out[index + 1] = '\0';
+        if (out[index] == '\b') // backspace pressed
+        {
+            if (index > 0)
+            {
+                out[index] = 0;
+                out[index - 1] = '\0';
+                index -= 1;
+                print("\b \b");
+            }
+        }
+        else
+        {
+            printChar(currentChar);
+            index++;
+        }
+    }
+    
+    printChar('\n');
+    return out;
+}
+
 char read_char()
 {
     int run = true;

@@ -29,5 +29,6 @@ void warn(const char* message);
 void error(const char* message);
 
 void print(const char* message);
+void printChar(char c);
 
 void init_console(struct limine_framebuffer *framebuffer);
