@@ -61,7 +61,7 @@ char *input(char *out)
 
     while ((currentChar = read_char()) != '\n')
     {
-        if (index == sizeof(out))
+        if (index == 254)
         {
             if (currentChar == '\b')
             {

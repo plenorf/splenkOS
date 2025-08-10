@@ -10,6 +10,7 @@
 #include "libc/string.h"
 #include "cpu/interrupts/pic.h"
 #include "util/command_parser.h"
+#include "cpu/multitasking.h"
 
 #include "drivers/timer.h"
 #include "drivers/keyboard.h"
