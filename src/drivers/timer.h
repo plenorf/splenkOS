@@ -1,5 +1,8 @@
 #include "driver.h"
 #include "../cpu/interrupts/irq.h"
+#include "../util/logging.h"
+#include "../util/serial.h"
+#include "../libc/string.h"
 
 #define PIT_CHANNEL0 0x40
 #define PIT_COMMAND  0x43
@@ -13,6 +16,15 @@ void timer_interrupt_handler(InterruptFrame* frame) {
 
 uint64_t get_uptime_ms() {
 	return msSinceBoot;
+}
+
+void sleep(uint64_t ms) {
+	uint64_t start = get_uptime_ms();
+	uint64_t end = start + ms;
+
+	while (get_uptime_ms() < end) {
+		asm("hlt");
+	}
 }
 
 int timer_init() {

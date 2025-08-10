@@ -1,3 +1,4 @@
+#include "main.h"
 #include <stdbool.h>
 #include <stddef.h>
 #include "flanterm/flanterm.h"
@@ -51,6 +52,113 @@ static void hcf(void) {
 }
 
 
+void kpanic(InterruptFrame* frame) {
+    static const char* exceptionLabels[] = {
+        "[0x00] Divide by Zero Exception",
+        "[0x01] Debug Exception",
+        "[0x02] Unhandled Non-maskable Interrupt",
+        "[0x03] Breakpoint Exception",
+        "[0x04] Overflow Exception",
+        "[0x05] Bound Range Exceeded Exception",
+        "[0x06] Invalid Opcode/Operand Exception",
+        "[0x07] Device Unavailable Exception",
+        "[0x08] Double Fault",
+        "[0x09] Coprocessor Segment Overrun",
+        "[0x0A] Invalid TSS Exception",
+        "[0x0B] Absent Segment Exception",
+        "[0x0C] Stack-segment Fault",
+        "[0x0D] General Protection Fault",
+        "[0x0E] Page Fault",
+        "[0x0F] Inexplicable Error",
+        "[0x10] x87 Floating Exception",
+        "[0x11] Alignment Check",
+        "[0x12] Machine Check",
+        "[0x13] SIMD Floating Exception",
+        "[0x14] Virtualized Exception",
+        "[0x15] Control Protection Exception",
+        "[0x16] Inexplicable Error",
+        "[0x17] Inexplicable Error",
+        "[0x18] Inexplicable Error",
+        "[0x19] Inexplicable Error",
+        "[0x1A] Inexplicable Error",
+        "[0x1B] Inexplicable Error",
+        "[0x1C] Hypervisor Intrusion Exception",
+        "[0x1D] VMM Communications Exception",
+        "[0x1E] Security Exception",
+        "[0x1F] Inexplicable Error"
+    };
+
+    print("\x1b[2J\x1b[H\n"); // clear screen and reset cursor pos
+
+    // display ascii art
+    print("       @@@@@@                     @@@@@@        \n");
+    print("    @@@@    @@                  @@:    @@       \n");
+    print("    @@@  @  @@       @@@@@@@@  @@  @  @@@       \n");
+    print("    @@@     @@@@@@@@@@@@@@@@@@@@*      @@@      \n");
+    print("     @@@@@@@                    @@@@@@ @@@      \n");
+    print("     @@                               @@@       \n");
+    print("   @@@                                  @@      \n");
+    print("  =@@                                    @@     \n");
+    print("  @@@                                      @@   \n");
+    print("  @@                                       @@   \n");
+    print("  @@                    @@@@@@@            @@   \n");
+    print("  @@                 @@@@     @@          @@    \n");
+    print("  @@@               @@         @@.        @@    \n");
+    print("   @@              @@           @@        @     \n");
+    print("   @@              @@           *@        @@    \n");
+    print("    @                                       =@@@\n");
+    print("-@@@@                                         @@\n");
+    print("@@               @@@@@@@@@@@@@       @@@@@@@@@@@\n");
+    print("@     @@@@     @@@@          @@@     @@@ %@@@@@ \n");
+    print("@@@@@@@@@     %@@               @@@@@@          \n");
+    print("        @    @@                                 \n");
+    print("         @@@@@                                  \n");
+
+    print("\n\nUhh.. Something \x1b[1;31mBAD\x1b[0m happened...\n");
+    print("There was a kernel panic, here's some error info.\n\n");
+
+    print("Interrupt Info:\n");
+    char itoaBuf[32];
+    print("\t- ");
+    print(exceptionLabels[frame->int_no]);
+    print("\n\t- Error Code: 0x");
+    print(itoa(frame->err_code, itoaBuf, 16));
+
+    print("\n\nRegister Dump:\n");
+
+    print("\t- RIP: 0x");
+    print(itoa(frame->rip, itoaBuf, 16));
+    print("\n\t- CS : 0x");
+    print(itoa(frame->cs, itoaBuf, 16));
+    print("\n\t- RF : 0x");
+    print(itoa(frame->rflags, itoaBuf, 16));
+    print("\n\t- RSP: 0x");
+    print(itoa(frame->rsp, itoaBuf, 16));
+    print("\n\t- RAX: 0x");
+    print(itoa(frame->rax, itoaBuf, 16));
+    print("\n\t- RCX: 0x");
+    print(itoa(frame->rcx, itoaBuf, 16));
+    print("\n\t- RDX: 0x");
+    print(itoa(frame->rdx, itoaBuf, 16));
+    print("\n\t- RDI: 0x");
+    print(itoa(frame->rdi, itoaBuf, 16));
+    print("\n\t- RSI: 0x");
+    print(itoa(frame->rsi, itoaBuf, 16));
+    print("\n\t- R8 : 0x");
+    print(itoa(frame->r8, itoaBuf, 16));
+    print("\n\t- R9 : 0x");
+    print(itoa(frame->r9, itoaBuf, 16));
+    print("\n\t- R10: 0x");
+    print(itoa(frame->r10, itoaBuf, 16));
+    print("\n\t- R11: 0x");
+    print(itoa(frame->r11, itoaBuf, 16));
+
+    print("\n\nThe computer will now halt.\n");
+
+    // completely halt and catch fire
+    hcf();
+}
+
 // The following will be our kernel's entry point.
 // If renaming kmain() to something else, make sure to change the
 // linker script accordingly.
@@ -95,7 +203,8 @@ void kmain(void) {
     PIC_remap(PIC1, PIC1);
 
     for (;;) {
-        
+        sleep(1000);
+        print("Slept for 1 second.\n");
     }
 
     warn("Kernel has run out of work! Halting the computer...");

@@ -3,6 +3,7 @@
 #include "pic.h"
 #include "../../libc/string.h"
 #include <stddef.h>
+#include "../../main.h"
 
 void exception_handler(InterruptFrame* frame) {
 
@@ -14,7 +15,7 @@ void exception_handler(InterruptFrame* frame) {
 
 	// If no handler is registered, log the unhandled interrupt
 	if (frame->int_no < 32) {
-		warn("Unhandled Exception");
+		kpanic(frame);
 	} else {
 		warn("Unhandled IRQ");
 	}
