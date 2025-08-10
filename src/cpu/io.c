@@ -5,9 +5,11 @@ void outb(uint16_t port, uint8_t value) {
 }
 
 uint8_t inb(uint16_t port) {
-	uint8_t ret;
-	asm volatile ("inb %1, %0" : "=a"(ret) : "dN"(port));
-	return ret;
+	uint8_t rv;
+	__asm__ __volatile__("inb %1, %0"
+						: "=a"(rv)
+						: "dN"(port));
+	return rv;
 }
 
 void io_wait(void)

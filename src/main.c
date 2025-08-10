@@ -204,12 +204,11 @@ void kmain(void) {
     idt_init();
     ok("Remapping PIC...");
     PIC_remap(PIC1, PIC1);
-
+    
     while (1)
     {
-        sleep(500);
-        print(get_char());
-        print('\n');
+        char buf[2] = { get_char(), '\0' };
+        print(buf);
     }
     
 
