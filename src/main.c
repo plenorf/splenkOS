@@ -98,8 +98,8 @@ void kmain(void) {
         
     }
 
-    //warn("Kernel has run out of work! Halting the computer...");
+    warn("Kernel has run out of work! Halting the computer...");
 
     // We're done, just hang...
-    //hcf();
+    hcf();
 }
