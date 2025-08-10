@@ -9,6 +9,7 @@
 #include "cpu/interrupts/idt.h"
 #include "libc/string.h"
 #include "cpu/interrupts/pic.h"
+#include "util/command_parser.h"
 
 #include "drivers/timer.h"
 #include "drivers/keyboard.h"
@@ -182,6 +183,8 @@ void kmain(void) {
     // setup flanterm
     init_console(framebuffer);
 
+    print("\n\033[2m[===============    BOOT LOG    ===============]\033[22m\n\n");
+
     // print out framebuffer resolution
     char xBuffer[8];
     char yBuffer[8];
@@ -205,12 +208,20 @@ void kmain(void) {
     ok("Remapping PIC...");
     PIC_remap(PIC1, PIC1);
 
+    print("\n\033[2m[=============== BOOT COMPLETE  ===============]\033[22m\n\n");
+
     printChar('\n');
     while (1)
     {
         print("> ");
-        char* userInput = input();
-        print(userInput);
+
+        char userInput[255];
+        input(userInput);
+
+        parseCommand(userInput);
+
+        userInput[0] = '\0';
+
         printChar('\n');
     }
     

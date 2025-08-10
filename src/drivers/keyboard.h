@@ -13,32 +13,37 @@ char *keycode = "\e 1234567890-=\b\tqwertyuiop[]\n\0asdfghjkl;'`\0\\zxcvbnm,./\0
 char *keycode_shift = "\e !@#$%^&*()_+\b\tQWERTYUIOP{}\n\0ASDFGHJKL:\"~\0|ZXCVBNM<>?\0\0\0 ";
 bool isShift = false;
 
-void keyboard_interrupt_handler(InterruptFrame* frame) {
-    
+void keyboard_interrupt_handler(InterruptFrame *frame)
+{
 }
 
-char get_char() {
+char get_char()
+{
     uint8_t scancode = inb(0x60);
     if (scancode < 60 && scancode > 0 && keycode[scancode] > 0 && keycode[scancode] < 254)
         return keycode[scancode];
     return 0;
 }
 
-int keyboard_init() {
+int keyboard_init()
+{
     register_interrupt_handler(KEYBOARD_IRQ, keyboard_interrupt_handler);
     return 0;
 }
 
-char *input() {
-    static char out[255] = {};
+char *input(char *out)
+{
     int index = 0;
     char currentChar = 0;
 
     while ((currentChar = read_char()) != '\n')
     {
-        if (index == 254) {
-            if (currentChar == '\b') {
-                if (index > 0) {
+        if (index == sizeof(out))
+        {
+            if (currentChar == '\b')
+            {
+                if (index > 0)
+                {
                     out[index] = 0;
                     out[index - 1] = '\0';
                     index -= 1;
@@ -66,7 +71,7 @@ char *input() {
             index++;
         }
     }
-    
+
     printChar('\n');
     return out;
 }
@@ -94,13 +99,11 @@ char read_char()
                 run = false;
         }
     }
-    
+
     return out;
 }
 
 Driver keyboardDriver = {
     .name = "Keyboard",
     .init = keyboard_init,
-    .shutdown = NULL
-};
-
+    .shutdown = NULL};

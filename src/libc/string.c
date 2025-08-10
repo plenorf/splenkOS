@@ -76,3 +76,61 @@ char *strcpy(char *dest, const char *src) {
     while ((*d++ = *src++)); // copy until null terminator (0) is copied
     return dest;
 }
+
+int strcmp(const char *str1, const char *str2) {
+    while (*str1 && (*str1 == *str2)) {
+        str1++;
+        str2++;
+    }
+    return (unsigned char)*str1 - (unsigned char)*str2;
+}
+
+char *strtok(char *str, const char *delim) {
+    static char *next; // saves position between calls
+    if (str) {
+        next = str; // first call with the string
+    }
+    if (!next) {
+        return NULL; // no more tokens
+    }
+
+    // Skip leading delimiters
+    char *start = next;
+    while (*start && strchr(delim, *start)) {
+        start++;
+    }
+
+    if (*start == '\0') {
+        next = NULL;
+        return NULL; // reached end
+    }
+
+    // Find end of the token
+    char *end = start;
+    while (*end && !strchr(delim, *end)) {
+        end++;
+    }
+
+    if (*end) {
+        *end = '\0';  // terminate token
+        next = end + 1; // save position for next call
+    } else {
+        next = NULL; // no more tokens
+    }
+
+    return start;
+}
+
+char *strchr(const char *str, int ch) {
+    while (*str) {
+        if (*str == (char)ch) {
+            return (char *)str; // cast to non-const for compatibility
+        }
+        str++;
+    }
+    // If ch is '\0', return pointer to the null terminator
+    if (ch == '\0') {
+        return (char *)str;
+    }
+    return NULL;
+}
