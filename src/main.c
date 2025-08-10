@@ -207,7 +207,7 @@ void kmain(void) {
     
     while (1)
     {
-        char buf[2] = { get_char(), '\0' };
+        char buf[2] = { read_char(), '\0' };
         print(buf);
     }
     
