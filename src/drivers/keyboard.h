@@ -27,6 +27,33 @@ int keyboard_init()
     return 0;
 }
 
+char read_char()
+{
+    int run = true;
+    char out = 0;
+
+    while (run)
+    {
+
+        if (inb(0x64) & 0x1)
+        {
+            uint8_t scancode = inb(0x60);
+            if (scancode == 0x2A && !isShift)
+                isShift = true;
+            else if (scancode == 0xAA && isShift)
+                isShift = false;
+            if (!isShift)
+                out = keycode[scancode];
+            else if (isShift)
+                out = keycode_shift[scancode];
+            if (out != 0 && scancode < 60)
+                run = false;
+        }
+    }
+
+    return out;
+}
+
 char *input(char *out)
 {
     int index = 0;
@@ -69,33 +96,6 @@ char *input(char *out)
     }
 
     printChar('\n');
-    return out;
-}
-
-char read_char()
-{
-    int run = true;
-    char out = 0;
-
-    while (run)
-    {
-
-        if (inb(0x64) & 0x1)
-        {
-            uint8_t scancode = inb(0x60);
-            if (scancode == 0x2A && !isShift)
-                isShift = true;
-            else if (scancode == 0xAA && isShift)
-                isShift = false;
-            if (!isShift)
-                out = keycode[scancode];
-            else if (isShift)
-                out = keycode_shift[scancode];
-            if (out != 0 && scancode < 60)
-                run = false;
-        }
-    }
-
     return out;
 }
 

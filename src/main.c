@@ -210,7 +210,9 @@ void kmain(void) {
 
     print("\n\033[2m[=============== BOOT COMPLETE  ===============]\033[22m\n\n");
 
-    printChar('\n');
+    print("Welcome to SplenkOS!\n");
+    print("Type \"help\" for a list of commands.\n\n");
+
     while (1)
     {
         print("> ");
