@@ -3,10 +3,6 @@
 #include "../util/logging.h"
 #include "../cpu/io.h"
 
-char read_char();
-char *input();
-void keyboard_handler();
-
 #define KEYBOARD_IRQ 0x21
 
 char *keycode = "\e 1234567890-=\b\tqwertyuiop[]\n\0asdfghjkl;'`\0\\zxcvbnm,./\0\0\0 ";
