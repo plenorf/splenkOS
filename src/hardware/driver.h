@@ -12,3 +12,4 @@ static int num_drivers = 0;
 
 void register_driver(Driver driver);
 void start_drivers();
+void select_drivers();

@@ -1,4 +1,4 @@
-#include "driver.h"
+#include "../hardware/driver.h"
 #include "../cpu/interrupts/irq.h"
 #include "../util/logging.h"
 #include "../util/serial.h"
