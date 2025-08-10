@@ -7,6 +7,7 @@
 #define PIT_CHANNEL0 0x40
 #define PIT_COMMAND  0x43
 #define PIT_FREQUENCY 1193182
+#define PIT_IRQ      0x20
 
 static uint64_t msSinceBoot = 0;
 

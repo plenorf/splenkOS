@@ -9,7 +9,9 @@
 #include "cpu/interrupts/idt.h"
 #include "libc/string.h"
 #include "cpu/interrupts/pic.h"
+
 #include "drivers/timer.h"
+#include "drivers/keyboard.h"
 
 
 #define MIN_LOG_LEVEL DEBUG
@@ -194,6 +196,7 @@ void kmain(void) {
     // do setup
     ok("Starting drivers...");
     register_driver(timerDriver);
+    register_driver(keyboardDriver);
     start_drivers();
     ok("Initialising GDT...");
     gdt_init();
@@ -202,10 +205,13 @@ void kmain(void) {
     ok("Remapping PIC...");
     PIC_remap(PIC1, PIC1);
 
-    for (;;) {
-        sleep(1000);
-        print("Slept for 1 second.\n");
+    while (1)
+    {
+        sleep(500);
+        print(get_char());
+        print('\n');
     }
+    
 
     warn("Kernel has run out of work! Halting the computer...");
 
