@@ -44,7 +44,6 @@ char read_char()
                 out = keycode[inb(0x60)];
             else if (isShift)
                 out = keycode_shift[inb(0x60)];
-            if
         }
     }
 }
