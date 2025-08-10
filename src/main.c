@@ -11,6 +11,7 @@
 #include "cpu/interrupts/pic.h"
 #include "util/command_parser.h"
 #include "cpu/multitasking.h"
+#include "hardware/pci.h"
 
 #include "drivers/timer.h"
 #include "drivers/keyboard.h"
@@ -198,6 +199,8 @@ void kmain(void) {
     info(finalBuf);
 
     // do setup
+    ok("Detecting hardware...");
+    select_drivers();
     ok("Starting drivers...");
     register_driver(timerDriver);
     register_driver(keyboardDriver);

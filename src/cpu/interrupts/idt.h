@@ -1,7 +1,7 @@
 #pragma once
 #include <stdint.h>
 #include <stdbool.h>
-#include "../../drivers/driver.h"
+#include "../../hardware/driver.h"
 
 #define IDT_MAX_ENTRIES 256
 
