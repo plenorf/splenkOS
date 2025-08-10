@@ -11,7 +11,6 @@ void keyboard_handler();
 
 char *keycode = "\e 1234567890-=\b\tqwertyuiop[]\n\0asdfghjkl;'`\0\\zxcvbnm,./\0\0\0 ";
 char *keycode_shift = "\e !@#$%^&*()_+\b\tQWERTYUIOP{}\n\0ASDFGHJKL:\"~\0|ZXCVBNM<>?\0\0\0 ";
-int isShift = 0;
 
 void keyboard_interrupt_handler(InterruptFrame* frame) {
     
@@ -31,17 +30,18 @@ int keyboard_init() {
 char read_char()
 {
     int run = 1;
-    char out 0;
+    char out = 0;
     while (run)
     {
-        if (inportb(0x64) & 0x1)
+        if (inb(0x64) & 0x1)
         {
-            if (inportb(0x60) == 0x2A && !isShift)
+            if (inb(0x60) == 0x2A && !isShift)
                 isShift = 1;
-            else if (inportb(0x60) == 0xAA && isShift)
+            else if (inb(0x60) == 0xAA && isShift)
                 isShift = 0;
             if (!isShift)
-                out = keycode[inportb(0x60)];
+                out = keycode[inb(0x60)];
+            
         }
     }
 }
