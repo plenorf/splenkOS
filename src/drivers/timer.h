@@ -6,6 +6,7 @@
 #include "../util/serial.h"
 #include "../libc/string.h"
 #include "../cpu/io.h"
+#include "../scheduler.h"
 
 #define PIT_CHANNEL0 0x40
 #define PIT_COMMAND  0x43
@@ -14,8 +15,14 @@
 
 static uint64_t msSinceBoot = 0;
 
-static uint64_t timer_interrupt_handler(InterruptFrame* frame) {
+static InterruptFrame* timer_interrupt_handler(InterruptFrame* frame) {
 	msSinceBoot += 1;
+
+	if (scheduler != NULL)
+	{
+		frame = schedule(scheduler, frame);
+	}
+	return frame;
 }
 
 uint64_t get_uptime_ms() {
@@ -32,7 +39,7 @@ void sleep(uint64_t ms) {
 }
 
 static int timer_init() {
-	uint32_t freq = 1000; // 1000 Hz
+	uint32_t freq = 1000; // 1 KHz
 	uint16_t divisor = PIT_FREQUENCY / freq;
 	outb(PIT_COMMAND, 0x36);           // Channel 0, low/high byte, mode 3
     outb(PIT_CHANNEL0, divisor & 0xFF); // Low byte

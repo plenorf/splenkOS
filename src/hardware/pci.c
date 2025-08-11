@@ -53,7 +53,6 @@ BaseAddressRegister getBaseAddressRegister(uint16_t bus, uint16_t device, uint16
 
 	uint32_t barValue = pciRead(bus, device, function, 0x10 + 4*bar);
 	result.type = (barValue & 0x1) ? InputOutput : MemoryMapping;
-	uint32_t temp;
 
 	if (result.type == MemoryMapping)
 	{

@@ -10,9 +10,9 @@ char *keycode = "\e 1234567890-=\b\tqwertyuiop[]\n\0asdfghjkl;'`\0\\zxcvbnm,./\0
 char *keycode_shift = "\e !@#$%^&*()_+\b\tQWERTYUIOP{}\n\0ASDFGHJKL:\"~\0|ZXCVBNM<>?\0\0\0 ";
 bool isShift = false;
 
-static uint64_t keyboard_interrupt_handler(InterruptFrame *frame)
+static InterruptFrame* keyboard_interrupt_handler(InterruptFrame *frame)
 {
-    return frame->rsp;
+    return frame;
 }
 
 char get_char()
