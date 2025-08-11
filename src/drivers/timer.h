@@ -21,6 +21,11 @@ static InterruptFrame* timer_interrupt_handler(InterruptFrame* frame) {
 	if (scheduler != NULL)
 	{
 		frame = schedule(scheduler, frame);
+
+		char buf[32];
+		print("0x");
+		print(itoa((uint64_t)frame, buf, 16));
+		printChar('\n');
 	}
 	return frame;
 }
