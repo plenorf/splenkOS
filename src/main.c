@@ -10,7 +10,6 @@
 #include "libc/string.h"
 #include "cpu/interrupts/pic.h"
 #include "util/command_parser.h"
-#include "cpu/multitasking.h"
 #include "hardware/pci.h"
 
 #include "drivers/timer.h"
@@ -166,14 +165,12 @@ void kpanic(InterruptFrame* frame) {
 
 void taskA() {
     while (1) {
-        sleep(500);
-        print("Task A slept for 500ms!\n");
+        print("A");
     }
 }
 void taskB() {
     while (1) {
-        sleep(500);
-        print("Task B slept for 500ms!\n");
+        print("B");
     }
 }
 
@@ -212,29 +209,13 @@ void kmain(void) {
     info(finalBuf);
 
     // do setup
+    ok("Starting task scheduler...");
     ok("Detecting hardware...");
     select_drivers();
     ok("Starting drivers...");
     register_driver(timerDriver);
     register_driver(keyboardDriver);
     start_drivers();
-
-    ok("Starting task scheduler...");
-    TaskManager taskManager = {
-        .currentTask = -1,
-        .numTasks = 0
-    };
-    Task task1 = {
-        .entryPoint = taskA
-    };
-    Task task2 = {
-        .entryPoint = taskB
-    };
-    initTask(&task1);
-    addTask(taskManager, &task1);
-    initTask(&task2);
-    addTask(taskManager, &task2);
-    irqTaskManager = &taskManager;
 
     ok("Initialising GDT...");
     gdt_init();

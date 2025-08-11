@@ -6,9 +6,8 @@
 #include "../../main.h"
 
 void exception_handler(InterruptFrame* frame) {
-
 	if (interruptHandlers[frame->int_no]) {
-		interruptHandlers[frame->int_no](frame, *irqTaskManager);
+		interruptHandlers[frame->int_no](frame);
 		PIC_sendEOI(frame->int_no - 0x20); // Send End of Interrupt signal to PIC
 		return;
 	}
@@ -18,14 +17,15 @@ void exception_handler(InterruptFrame* frame) {
 		kpanic(frame);
 	} else {
 		warn("Unhandled IRQ");
+		char buf[5];
+		print("\t- Interrupt #: ");
+		print(itoa(frame->int_no, buf, 10));
+		print("\n\t- Error Code : ");
+		print(itoa(frame->err_code, buf, 10));
+		print("\n");
+		PIC_sendEOI(frame->int_no-0x20);
 	}
-    char buf[5];
-    print("\t- Interrupt #: ");
-    print(itoa(frame->int_no, buf, 10));
-    print("\n\t- Error Code : ");
-    print(itoa(frame->err_code, buf, 10));
-    print("\n");
-    PIC_sendEOI(frame->int_no-0x20);
+    
     return; // VERY IMPORTANT THAT THIS FUNCTION RETURNS
 }
 

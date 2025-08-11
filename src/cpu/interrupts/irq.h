@@ -1,7 +1,6 @@
 #pragma once
 #include <stdint.h>
 #include <stddef.h>
-#include "../multitasking.h"
 
 typedef struct InterruptFrame
 {
@@ -11,10 +10,8 @@ typedef struct InterruptFrame
     uint64_t rsp, rflags, cs, rip;
 }__attribute__((packed)) InterruptFrame;
 
-typedef void (*irq_handler_t)(InterruptFrame* frame, TaskManager irqTaskManager);
+typedef uint64_t (*irq_handler_t)(InterruptFrame* frame);
 static irq_handler_t interruptHandlers[256];
-
-static TaskManager* irqTaskManager = NULL;
 
 void register_interrupt_handler(uint8_t irq, irq_handler_t handler);
 void unregister_interrupt_handler(uint8_t irq);
