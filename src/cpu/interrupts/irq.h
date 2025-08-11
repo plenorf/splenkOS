@@ -15,4 +15,4 @@ static irq_handler_t interruptHandlers[256];
 
 void register_interrupt_handler(uint8_t irq, irq_handler_t handler);
 void unregister_interrupt_handler(uint8_t irq);
-void exception_handler(InterruptFrame* frame);
+InterruptFrame* exception_handler(InterruptFrame* frame);
