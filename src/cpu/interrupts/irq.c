@@ -8,7 +8,7 @@
 void exception_handler(InterruptFrame* frame) {
 
 	if (interruptHandlers[frame->int_no]) {
-		interruptHandlers[frame->int_no](frame);
+		interruptHandlers[frame->int_no](frame, *irqTaskManager);
 		PIC_sendEOI(frame->int_no - 0x20); // Send End of Interrupt signal to PIC
 		return;
 	}

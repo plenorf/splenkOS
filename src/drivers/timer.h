@@ -6,6 +6,7 @@
 #include "../util/serial.h"
 #include "../libc/string.h"
 #include "../cpu/io.h"
+#include "../cpu/multitasking.h"
 
 #define PIT_CHANNEL0 0x40
 #define PIT_COMMAND  0x43
@@ -14,8 +15,10 @@
 
 static uint64_t msSinceBoot = 0;
 
-static void timer_interrupt_handler(InterruptFrame* frame) {
+static void timer_interrupt_handler(InterruptFrame* frame, TaskManager taskManager) {
 	msSinceBoot += 1;
+
+	//schedule(taskManager, (CPUState*)frame->rsp);
 }
 
 uint64_t get_uptime_ms() {

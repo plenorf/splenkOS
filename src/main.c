@@ -164,6 +164,19 @@ void kpanic(InterruptFrame* frame) {
     hcf();
 }
 
+void taskA() {
+    while (1) {
+        sleep(500);
+        print("Task A slept for 500ms!\n");
+    }
+}
+void taskB() {
+    while (1) {
+        sleep(500);
+        print("Task B slept for 500ms!\n");
+    }
+}
+
 // The following will be our kernel's entry point.
 // If renaming kmain() to something else, make sure to change the
 // linker script accordingly.
@@ -205,6 +218,24 @@ void kmain(void) {
     register_driver(timerDriver);
     register_driver(keyboardDriver);
     start_drivers();
+
+    ok("Starting task scheduler...");
+    TaskManager taskManager = {
+        .currentTask = -1,
+        .numTasks = 0
+    };
+    Task task1 = {
+        .entryPoint = taskA
+    };
+    Task task2 = {
+        .entryPoint = taskB
+    };
+    initTask(&task1);
+    addTask(taskManager, &task1);
+    initTask(&task2);
+    addTask(taskManager, &task2);
+    irqTaskManager = &taskManager;
+
     ok("Initialising GDT...");
     gdt_init();
     ok("Initialising IDT...");
