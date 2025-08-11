@@ -35,10 +35,10 @@ void select_drivers() {
 						descriptor.portBase = (uint32_t)bar.address;
 					}
 
-					Driver *driver = findDriver(descriptor);
-					if (driver != NULL)
-						register_driver(*driver);
 				}
+				Driver *driver = findDriver(descriptor);
+				if (driver != NULL)
+					register_driver(*driver);
 				
 				char buf[8];
 				print("PCI BUS 0x");
