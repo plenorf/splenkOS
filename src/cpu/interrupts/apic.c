@@ -43,3 +43,17 @@ void enable_apic() {
     cpu_set_apic_base(cpu_get_apic_base());
     write_reg(0xF0, ReadRegister(0xF0) | 0x100);
 }
+//IO stuff
+uint32_t cpuReadIoApic(void *ioapicaddr, uint32_t reg)
+{
+   uint32_t volatile *ioapic = (uint32_t volatile *)ioapicaddr;
+   ioapic[0] = (reg & 0xff);
+   return ioapic[4];
+}
+
+void cpuWriteIoApic(void *ioapicaddr, uint32_t reg, uint32_t value)
+{
+   uint32_t volatile *ioapic = (uint32_t volatile *)ioapicaddr;
+   ioapic[0] = (reg & 0xff);
+   ioapic[4] = value;
+}
