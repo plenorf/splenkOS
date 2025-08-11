@@ -27,6 +27,7 @@ isr_common_stub:
     pushad
     lea rdi, [rsp]
     call exception_handler
+    mov rsp, rax
     popad
     add rsp, 0x10
     iretq ; we're 64bit so we use iretq

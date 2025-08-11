@@ -5,11 +5,11 @@
 #include <stddef.h>
 #include "../../main.h"
 
-void exception_handler(InterruptFrame* frame) {
+InterruptFrame* exception_handler(InterruptFrame* frame) {
 	if (interruptHandlers[frame->int_no]) {
 		interruptHandlers[frame->int_no](frame);
 		PIC_sendEOI(frame->int_no - 0x20); // Send End of Interrupt signal to PIC
-		return;
+		return frame;
 	}
 
 	// If no handler is registered, log the unhandled interrupt
@@ -26,7 +26,7 @@ void exception_handler(InterruptFrame* frame) {
 		PIC_sendEOI(frame->int_no-0x20);
 	}
     
-    return; // VERY IMPORTANT THAT THIS FUNCTION RETURNS
+    return frame; // VERY IMPORTANT THAT THIS FUNCTION RETURNS
 }
 
 void register_interrupt_handler(uint8_t irq, irq_handler_t handler) {
