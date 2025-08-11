@@ -1,5 +1,6 @@
 #pragma once
 #include <stdint.h>
+#include "pci.h"
 
 typedef struct Driver {
     const char *name;
@@ -13,3 +14,4 @@ static int num_drivers = 0;
 void register_driver(Driver driver);
 void start_drivers();
 void select_drivers();
+Driver *findDriver(DeviceDescriptor descriptor);
