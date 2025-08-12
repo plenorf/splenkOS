@@ -15,6 +15,7 @@ InterruptFrame* schedule(Scheduler *scheduler, InterruptFrame *context) {
 		scheduler->currentProcess = scheduler->processesList;
 	}
 
+
 	context = scheduler->currentProcess->context;
 }
 
@@ -23,19 +24,38 @@ Process* initProcess(Process* newProcess, void (*func)(void), bool isUser) {
 
 	newProcess->status = READY;
 	newProcess->next = NULL;
-	
-	InterruptFrame frame;
-	newProcess->context = &frame;
-	newProcess->context->int_no = 0x20;
-	newProcess->context->err_code = 0x0;
-	newProcess->context->rip = (uint64_t)func;
-	newProcess->context->rdi = 0;
-	newProcess->context->rsi = 0;
-	newProcess->context->rflags = 0x202;
-	newProcess->context->cs = GDT_CODE_SEGMENT;
 
 	char stack[4096];
-	newProcess->context->rsp = (uint64_t)stack + sizeof(stack);
+
+	InterruptFrame frame = {
+		.int_no = 0x20,
+		.err_code = 0x0,
+		.rip = func,
+		.rdi = 0,
+		.rsi = 0,
+		.rflags = 0x202,
+		.cs = GDT_CODE_SEGMENT,
+		.rsp = (uint64_t)stack + sizeof(stack),
+		.rax = 0,
+		.rcx = 0,
+		.rdx = 0,
+		.r8 = 0,
+		.r9 = 0,
+		.r10 = 0,
+		.r11 = 0
+	};
+	newProcess->context = &frame;
+
+	char buf[32];
+	itoa((uint64_t)func, buf, 16);
+	print("0x");
+	print(buf);
+	printChar('\n');
+	itoa((uint64_t)newProcess->context->rsp, buf, 16);
+	print("0x");
+	print(buf);
+	printChar('\n');
+	print("-----------\n");
 
 	asm ("sti");
 	return newProcess;

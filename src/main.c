@@ -220,19 +220,16 @@ void kmain(void) {
     ok("Starting task scheduler...");
     Scheduler mainScheduler;
     scheduler = &mainScheduler;
-    if (scheduler == NULL) {
-        print("bruh\n");
-        hcf();
-    }
-
-    Process idleProcess;
-    initProcess(&idleProcess, idle, false);
-    scheduler->currentProcess = &idleProcess;
-    scheduler->processesList = &idleProcess;
 
     Process testProcess;
     initProcess(&testProcess, test, false);
-    idleProcess.next = &testProcess;
+    scheduler->currentProcess = &testProcess;
+    scheduler->processesList = &testProcess;
+
+    Process idleProcess;
+    initProcess(&idleProcess, idle, false);
+    testProcess.next = &idleProcess;
+
     ok("Detecting hardware...");
     select_drivers();
     ok("Starting drivers...");
