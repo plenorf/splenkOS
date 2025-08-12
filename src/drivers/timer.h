@@ -34,6 +34,10 @@ static InterruptFrame* timer_interrupt_handler(InterruptFrame* frame) {
 		print("0x");
 		print(itoa(frame->rsp, buf, 16));
 		printChar('\n');
+		print("RAX: ");
+		print("0x");
+		print(itoa(frame->rax, buf, 16));
+		printChar('\n');
 		print("---------------\n");
 
 		// each clock tick we swap between each running process
@@ -41,7 +45,7 @@ static InterruptFrame* timer_interrupt_handler(InterruptFrame* frame) {
 		// running simultaneously, since our clock is running
 		// at 1KHz, each program gets 1 ms of CPU time per tick,
 		// this is called a quantum.
-		frame = schedule(scheduler, frame);
+		schedule(scheduler, &frame);
 
 		print("AFTER:\n");
 		print("INT: ");
@@ -56,10 +60,12 @@ static InterruptFrame* timer_interrupt_handler(InterruptFrame* frame) {
 		print("0x");
 		print(itoa(frame->rsp, buf, 16));
 		printChar('\n');
+		print("RAX: ");
+		print("0x");
+		print(itoa(frame->rax, buf, 16));
+		printChar('\n');
 		print("---------------\n");
-		for (;;) {
-			asm("hlt");
-		}
+		
 	}
 
 	return frame;

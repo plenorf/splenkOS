@@ -221,14 +221,14 @@ void kmain(void) {
     Scheduler mainScheduler;
     scheduler = &mainScheduler;
 
-    Process testProcess;
-    initProcess(&testProcess, test, false);
-    scheduler->currentProcess = &testProcess;
-    scheduler->processesList = &testProcess;
-
     Process idleProcess;
     initProcess(&idleProcess, idle, false);
-    testProcess.next = &idleProcess;
+    scheduler->processesList = &idleProcess;
+    scheduler->currentProcess = &idleProcess;
+
+    Process testProcess;
+    initProcess(&testProcess, test, false);
+    scheduler->currentProcess->next = &testProcess;
 
     ok("Detecting hardware...");
     select_drivers();

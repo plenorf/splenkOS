@@ -1,13 +1,4 @@
-
-//TODO: Use the header instead of defining these here idk why but the header file doesn't include right
-#define CPUID_FEAT_EDX_APIC (1 << 9)
-#define IA32_APIC_BASE_MSR 0x1B
-#define IA32_APIC_BASE_MSR_BSP 0x100
-#define IA32_APIC_BASE_MSR_ENABLE 0x800
-#include <stdbool.h>
-#include <stdint.h>
-
-
+/*#include "apic.h"
 
 bool check_apic() {
    uint32_t eax, edx;
@@ -56,4 +47,4 @@ void cpuWriteIoApic(void *ioapicaddr, uint32_t reg, uint32_t value)
    uint32_t volatile *ioapic = (uint32_t volatile *)ioapicaddr;
    ioapic[0] = (reg & 0xff);
    ioapic[4] = value;
-}
+}*/
