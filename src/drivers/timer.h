@@ -20,7 +20,7 @@ static InterruptFrame* timer_interrupt_handler(InterruptFrame* frame) {
 
 	if (scheduler != NULL)
 	{
-		print("BEFORE:\n");
+		/*print("BEFORE:\n");
 		char buf[32];
 		print("INT: ");
 		print("0x");
@@ -64,7 +64,7 @@ static InterruptFrame* timer_interrupt_handler(InterruptFrame* frame) {
 		print("0x");
 		print(itoa(frame->rax, buf, 16));
 		printChar('\n');
-		print("---------------\n");
+		print("---------------\n");*/
 		
 	}
 
