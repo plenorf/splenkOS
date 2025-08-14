@@ -22,7 +22,7 @@ int main(void) {
     "@@@@@@&%@@@@@@@@@@@@@@@@@@@@@@   GPU: Idfk\n"
     "                                RAM: We dont need ram anyway\n";
 
-    printf("%s", splenk_logo);
+    print("%s", splenk_logo);
     return 0;
 }
 // idk how to get the actual values for the placeholders
