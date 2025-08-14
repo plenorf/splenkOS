@@ -26,6 +26,7 @@ char get_char()
 int keyboard_init()
 {
     register_interrupt_handler(KEYBOARD_IRQ, keyboard_interrupt_handler);
+    register_interrupt_handler(0x27, keyboard_interrupt_handler); // spurious interrupt, often unused, just ignore it
     return 0;
 }
 
