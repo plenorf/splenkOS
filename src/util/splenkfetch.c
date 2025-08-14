@@ -30,3 +30,10 @@ int main(void) {
 //If you are reading this and you are spook, please tell me how to get the values for the placeholders
 //If you are reading this and you are not spook, who are you cause you arent me or spook
 //This ISNT a neofetch clone, neofetch is a clone of splenkfetch (Trust me bro)) 
+
+// hi plenorf
+// look in driver.c, at the bottom in the findDriver function.
+// the pci tells us the vendor id and deviceId, which we can use
+// to figure out the exact type of device you have installed
+// look for a vendor and device id lookup online, it'll help you
+// on boot the PCI code prints out all the hardware on the machine
