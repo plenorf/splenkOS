@@ -8,3 +8,4 @@ iso_root/*
 iso_root/boot/*
 iso_root/boot/limine/*
 limine
+.vscode
