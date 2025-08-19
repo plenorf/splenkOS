@@ -29,7 +29,7 @@ Process* initProcess(Process* newProcess, void (*func)(void), bool isUser) {
 	InterruptFrame frame = {
 		.int_no = 0x20,
 		.err_code = 0x0,
-		.rip = func,
+		.rip = (uint64_t)func,
 		.rdi = 0,
 		.rsi = 0,
 		.rflags = 0x202,
