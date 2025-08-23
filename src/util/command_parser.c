@@ -81,6 +81,14 @@ void parseCommand(char *input, struct limine_framebuffer* framebuffer) {
 			print("\n\033[1;92m@@@@@@@@@     @             @@@@@@@           \033[0m");
 			print("\n\033[1;92m     @ @@   @@                                \033[0m");
 			print("\n\033[1;92m        @@@@@                                 \033[0m\n");
+		
+		} else if (strcmp(command, "Memory") == 0 ) {
+			char *buffer = malloc(256);
+			strcpy(buffer, "Memory test");
+			print(buffer);
+			free(buffer);
+		}
+		
 		} else {
 			print("Unknown command.\n");
 		}
