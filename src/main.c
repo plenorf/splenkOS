@@ -12,6 +12,7 @@
 #include "util/command_parser.h"
 #include "hardware/pci.h"
 #include "scheduler.h"
+#include "mem/mem.h"
 
 #include "drivers/timer.h"
 #include "drivers/keyboard.h"
@@ -207,10 +208,12 @@ void kmain(void) {
     // setup flanterm
     init_console(framebuffer);
 
+    print("\n\033[2m[===============    BOOT LOG    ===============]\033[22m\n\n");
+
+    ok("Setting up memory manager...");
     pmm_init(128 * 1024 * 1024, (uintptr_t)pmm_bitmap); // pretend 128MB RAM
     heap_init(heap_area, sizeof(heap_area));
-
-    print("\n\033[2m[===============    BOOT LOG    ===============]\033[22m\n\n");
+    mm_dump();
 
     // print out framebuffer resolution
     char xBuffer[8];

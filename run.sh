@@ -1,1 +1,1 @@
-qemu-system-x86_64 -drive format=raw,file=image.iso -m 256M
+qemu-system-x86_64 -drive format=raw,file=image.iso

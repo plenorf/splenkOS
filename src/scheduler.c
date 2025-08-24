@@ -3,7 +3,7 @@
 #include "cpu/gdt.h"
 #include "util/logging.h"
 #include "libc/string.h"
-
+#include "mem/mem.h"
 
 InterruptFrame* schedule(Scheduler *scheduler, InterruptFrame **context) {
 	scheduler->currentProcess->context = *context; // save the current process context
@@ -25,7 +25,7 @@ Process* initProcess(Process* newProcess, void (*func)(void), bool isUser) {
 	newProcess->status = READY;
 	newProcess->next = NULL;
 
-	char stack[4096];
+	char *stack = kmalloc(4096);
 
 	InterruptFrame *frame = newProcess->context;
 	*frame = (InterruptFrame){
