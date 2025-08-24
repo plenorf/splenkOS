@@ -27,7 +27,7 @@ Process* initProcess(Process* newProcess, void (*func)(void), bool isUser) {
 
 	char *stack = kmalloc(4096);
 
-	InterruptFrame *frame = newProcess->context;
+	InterruptFrame *frame = kmalloc(sizeof(InterruptFrame));
 	*frame = (InterruptFrame){
 		.int_no = 0x20,
 		.err_code = 0x0,
