@@ -9,10 +9,10 @@ InterruptFrame* schedule(Scheduler *scheduler, InterruptFrame **context) {
 	scheduler->currentProcess->context = *context; // save the current process context
 
 	if (scheduler->currentProcess->next != NULL) { // there is still another process in the linked list
-		print("Switching to next process\n");
+		//print("Switching to next process\n");
 		scheduler->currentProcess = scheduler->currentProcess->next;
 	} else { // we've reached the end of the process list, go back to the beginning!
-		print("Wrapping around to first process\n");
+		//print("Wrapping around to first process\n");
 		scheduler->currentProcess = scheduler->processesList;
 	}
 
