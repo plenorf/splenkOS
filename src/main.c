@@ -182,6 +182,10 @@ void test() {
     
 }
 
+// 1 MB heap + bitmap
+static uint8_t heap_area[1024 * 1024];
+static uint8_t pmm_bitmap[1024 * 128]; // enough for ~128MB RAM meaing we can track 1,048,576 frames or 4 GiB RAM
+
 // The following will be our kernel's entry point.
 // If renaming kmain() to something else, make sure to change the
 // linker script accordingly.
@@ -202,6 +206,9 @@ void kmain(void) {
 
     // setup flanterm
     init_console(framebuffer);
+
+    pmm_init(128 * 1024 * 1024, (uintptr_t)pmm_bitmap); // pretend 128MB RAM
+    heap_init(heap_area, sizeof(heap_area));
 
     print("\n\033[2m[===============    BOOT LOG    ===============]\033[22m\n\n");
 
@@ -244,6 +251,8 @@ void kmain(void) {
     ok("Remapping PIC...");
     PIC_remap(PIC1, PIC1);
 
+    
+
     print("\n\033[2m[=============== BOOT COMPLETE  ===============]\033[22m\n\n");
 
     print("Welcome to SplenkOS!\n");
@@ -268,4 +277,5 @@ void kmain(void) {
 
     // We're done, just hang...
     hcf();
+    
 }

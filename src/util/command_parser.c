@@ -91,6 +91,5 @@ void parseCommand(char *input, struct limine_framebuffer* framebuffer) {
 		
 		} else {
 			print("Unknown command.\n");
-		}
 	}
 }
