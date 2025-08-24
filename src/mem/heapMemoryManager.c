@@ -1,4 +1,6 @@
 #include "mem.h"
+#include "../util/logging.h"
+#include "../libc/string.h"
 
 typedef struct Block {
     size_t size;
@@ -63,8 +65,15 @@ void mm_dump(void) {
     Block* curr = heap_start;
     while (curr) {
         char buf[64];
-        sprintf(buf, "[Block] %p size=%u free=%d\n", curr, (unsigned)curr->size, curr->free);
+        print("[Block] ");
+        itoa(curr, buf, 10);
         print(buf);
+        print(" size=");
+        itoa((unsigned)curr->size, buf, 10);
+        print(buf);
+        print(" free=");
+        itoa(curr->free, buf, 10);
+        printChar('\n');
         curr = curr->next;
     }
 }
