@@ -22,21 +22,23 @@ static InterruptFrame* timer_interrupt_handler(InterruptFrame* frame) {
 	{
 		print("BEFORE:\n");
 		char buf[32];
-		print("INT: ");
-		print("0x");
+		print("INT: 0x");
 		print(itoa(frame->int_no, buf, 16));
 		printChar('\n');
-		print("RIP: ");
-		print("0x");
+		print("RIP: 0x");
 		print(itoa(frame->rip, buf, 16));
 		printChar('\n');
-		print("RSP: ");
-		print("0x");
+		print("RSP: 0x");
 		print(itoa(frame->rsp, buf, 16));
 		printChar('\n');
-		print("RAX: ");
-		print("0x");
+		print("RAX: 0x");
 		print(itoa(frame->rax, buf, 16));
+		printChar('\n');
+		print("proc pointer: 0x");
+		print(itoa((uint32_t)scheduler->currentProcess, buf, 16));
+		printChar('\n');
+		print("context pointer: 0x");
+		print(itoa((uint32_t)scheduler->currentProcess->context, buf, 16));
 		printChar('\n');
 		print("---------------\n");
 
@@ -45,24 +47,26 @@ static InterruptFrame* timer_interrupt_handler(InterruptFrame* frame) {
 		// running simultaneously, since our clock is running
 		// at 1KHz, each program gets 1 ms of CPU time per tick,
 		// this is called a quantum.
-		schedule(scheduler, &frame);
+		frame = schedule(scheduler, &frame);
 
 		print("AFTER:\n");
-		print("INT: ");
-		print("0x");
+		print("INT: 0x");
 		print(itoa(frame->int_no, buf, 16));
 		printChar('\n');
-		print("RIP: ");
-		print("0x");
+		print("RIP: 0x");
 		print(itoa(frame->rip, buf, 16));
 		printChar('\n');
-		print("RSP: ");
-		print("0x");
+		print("RSP: 0x");
 		print(itoa(frame->rsp, buf, 16));
 		printChar('\n');
-		print("RAX: ");
-		print("0x");
+		print("RAX: 0x");
 		print(itoa(frame->rax, buf, 16));
+		printChar('\n');
+		print("proc pointer: 0x");
+		print(itoa((uint32_t)scheduler->currentProcess, buf, 16));
+		printChar('\n');
+		print("context pointer: 0x");
+		print(itoa((uint32_t)scheduler->currentProcess->context, buf, 16));
 		printChar('\n');
 		print("---------------\n");
 		
