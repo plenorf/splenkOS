@@ -20,7 +20,7 @@ static InterruptFrame* timer_interrupt_handler(InterruptFrame* frame) {
 
 	if (scheduler != NULL)
 	{
-		/*print("BEFORE:\n");
+		print("BEFORE:\n");
 		char buf[32];
 		print("INT: 0x");
 		print(itoa(frame->int_no, buf, 16));
@@ -40,7 +40,10 @@ static InterruptFrame* timer_interrupt_handler(InterruptFrame* frame) {
 		print("context pointer: 0x");
 		print(itoa((uint32_t)scheduler->currentProcess->context, buf, 16));
 		printChar('\n');
-		print("---------------\n");*/
+		print("frame pointer: 0x");
+		print(itoa((uint32_t)frame, buf, 16));
+		printChar('\n');
+		print("---------------\n");
 
 		// each clock tick we swap between each running process
 		// this gives the illusion that multiple processes are
@@ -49,7 +52,7 @@ static InterruptFrame* timer_interrupt_handler(InterruptFrame* frame) {
 		// this is called a quantum.
 		frame = schedule(scheduler, &frame);
 
-		/*print("AFTER:\n");
+		print("AFTER:\n");
 		print("INT: 0x");
 		print(itoa(frame->int_no, buf, 16));
 		printChar('\n');
@@ -68,7 +71,10 @@ static InterruptFrame* timer_interrupt_handler(InterruptFrame* frame) {
 		print("context pointer: 0x");
 		print(itoa((uint32_t)scheduler->currentProcess->context, buf, 16));
 		printChar('\n');
-		print("---------------\n");*/
+		print("frame pointer: 0x");
+		print(itoa((uint32_t)frame, buf, 16));
+		printChar('\n');
+		print("---------------\n");
 		
 	}
 
