@@ -168,7 +168,7 @@ void kpanic(InterruptFrame* frame) {
 void idle() {
     while (1)
     {
-        print("A\n");
+        print("IDLE\n");
         asm("hlt");
     }
     
@@ -177,7 +177,7 @@ void idle() {
 void test() {
     while (1)
     {
-        print("B\n");
+        print("TEST\n");
         asm("hlt");
     }
     
