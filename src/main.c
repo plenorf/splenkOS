@@ -185,7 +185,7 @@ void test() {
 
 // 1 MB heap + bitmap
 static uint8_t heap_area[1024 * 1024];
-static uint8_t pmm_bitmap[1024 * 128]; // enough for ~128MB RAM meaing we can track 1,048,576 frames or 4 GiB RAM
+static uint8_t pmm_bitmap[1024 * 128]; // enough for ~128MB RAM meaing we can track 1,048,576 frames or 4 GiB RAM add more if you feel like it
 
 // The following will be our kernel's entry point.
 // If renaming kmain() to something else, make sure to change the
