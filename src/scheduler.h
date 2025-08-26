@@ -23,5 +23,5 @@ typedef struct Scheduler
 
 static Scheduler *scheduler = NULL;
 
-InterruptFrame* schedule(Scheduler *scheduler, InterruptFrame **context);
-Process* initProcess(Process* newProcess, void (*func)(void), bool isUser);
+InterruptFrame* schedule(Scheduler *scheduler, InterruptFrame *context);
+Process* initProcess(Process* newProcess, void (*func)(void*), bool isUser);

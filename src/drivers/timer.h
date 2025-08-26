@@ -18,7 +18,7 @@ static uint64_t msSinceBoot = 0;
 static InterruptFrame* timer_interrupt_handler(InterruptFrame* frame) {
 	msSinceBoot += 1;
 
-	if (scheduler != NULL)
+	if (scheduler != NULL && msSinceBoot % 1000 == 0)
 	{
 		print("BEFORE:\n");
 		char buf[32];
@@ -50,7 +50,7 @@ static InterruptFrame* timer_interrupt_handler(InterruptFrame* frame) {
 		// running simultaneously, since our clock is running
 		// at 1KHz, each program gets 1 ms of CPU time per tick,
 		// this is called a quantum.
-		frame = schedule(scheduler, &frame);
+		frame = schedule(scheduler, frame);
 
 		print("AFTER:\n");
 		print("INT: 0x");

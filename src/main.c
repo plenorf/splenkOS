@@ -231,14 +231,14 @@ void kmain(void) {
     Scheduler mainScheduler;
     scheduler = &mainScheduler;
 
-    Process idleProcess;
-    initProcess(&idleProcess, idle, false);
-    scheduler->processesList = &idleProcess;
-    scheduler->currentProcess = &idleProcess;
+    Process *idleProcess = kmalloc(sizeof(Process));
+    initProcess(idleProcess, idle, false);
+    scheduler->processesList = idleProcess;
+    scheduler->currentProcess = idleProcess;
 
-    Process testProcess;
-    initProcess(&testProcess, test, false);
-    scheduler->currentProcess->next = &testProcess;
+    Process *testProcess = kmalloc(sizeof(Process));
+    initProcess(testProcess, test, false);
+    scheduler->currentProcess->next = testProcess;
 
     ok("Detecting hardware...");
     select_drivers();
@@ -253,7 +253,7 @@ void kmain(void) {
     idt_init();
     ok("Remapping PIC...");
     PIC_remap(PIC1, PIC1);
-
+    __asm__ volatile ("sti"); // set the interrupt flag
     
 
     print("\n\033[2m[=============== BOOT COMPLETE  ===============]\033[22m\n\n");

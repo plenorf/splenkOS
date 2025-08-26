@@ -7,7 +7,7 @@
 
 InterruptFrame* exception_handler(InterruptFrame* frame) {
 	if (interruptHandlers[frame->int_no]) {
-		interruptHandlers[frame->int_no](frame);
+		frame = interruptHandlers[frame->int_no](frame);
 		PIC_sendEOI(frame->int_no - 0x20); // Send End of Interrupt signal to PIC
 		return frame;
 	}

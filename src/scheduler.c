@@ -5,8 +5,8 @@
 #include "libc/string.h"
 #include "mem/mem.h"
 
-InterruptFrame* schedule(Scheduler *scheduler, InterruptFrame **context) {
-	scheduler->currentProcess->context = *context; // save the current process context
+InterruptFrame* schedule(Scheduler *scheduler, InterruptFrame *context) {
+	scheduler->currentProcess->context = context; // save the current process context
 
 	if (scheduler->currentProcess->next != NULL) { // there is still another process in the linked list
 		//print("Switching to next process\n");
@@ -19,24 +19,24 @@ InterruptFrame* schedule(Scheduler *scheduler, InterruptFrame **context) {
 	return scheduler->currentProcess->context;
 }
 
-Process* initProcess(Process* newProcess, void (*func)(void), bool isUser) {
+Process* initProcess(Process* newProcess, void (*func)(void*), bool isUser) {
 	asm volatile ("cli");
 
 	newProcess->status = READY;
 	newProcess->next = NULL;
 
-	char *stack = kmalloc(4096);
+	char *stack = pmm_alloc();
 
 	InterruptFrame *frame = kmalloc(sizeof(InterruptFrame));
 	*frame = (InterruptFrame){
-		.int_no = 0x20,
+		.int_no = 0x101,
 		.err_code = 0x0,
 		.rip = (uint64_t)func,
 		.rdi = 0,
 		.rsi = 0,
 		.rflags = 0x202,
 		.cs = GDT_CODE_SEGMENT,
-		.rsp = (uint64_t)stack + sizeof(stack),
+		.rsp = stack + sizeof(stack),
 		.rax = 1,
 		.rcx = 0,
 		.rdx = 0,
