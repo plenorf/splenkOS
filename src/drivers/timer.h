@@ -18,7 +18,7 @@ static uint64_t msSinceBoot = 0;
 static InterruptFrame* timer_interrupt_handler(InterruptFrame* frame) {
 	msSinceBoot += 1;
 
-	if (scheduler != NULL && msSinceBoot % 1000 == 0)
+	if (scheduler != NULL)
 	{
 		print("BEFORE:\n");
 		char buf[32];

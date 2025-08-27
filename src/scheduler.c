@@ -4,6 +4,7 @@
 #include "util/logging.h"
 #include "libc/string.h"
 #include "mem/mem.h"
+#include "gcc_functions.h"
 
 InterruptFrame* schedule(Scheduler *scheduler, InterruptFrame *context) {
 	scheduler->currentProcess->context = context; // save the current process context
@@ -25,7 +26,8 @@ Process* initProcess(Process* newProcess, void (*func)(void*), bool isUser) {
 	newProcess->status = READY;
 	newProcess->next = NULL;
 
-	char *stack = pmm_alloc();
+	char *stack = kmalloc(4096);
+	memset(stack, 0, sizeof(stack));
 
 	InterruptFrame *frame = kmalloc(sizeof(InterruptFrame));
 	*frame = (InterruptFrame){
@@ -36,7 +38,7 @@ Process* initProcess(Process* newProcess, void (*func)(void*), bool isUser) {
 		.rsi = 0,
 		.rflags = 0x202,
 		.cs = GDT_CODE_SEGMENT,
-		.rsp = stack + sizeof(stack),
+		.rsp = ((uint64_t)stack + sizeof(stack)),
 		.rax = 1,
 		.rcx = 0,
 		.rdx = 0,
@@ -48,11 +50,11 @@ Process* initProcess(Process* newProcess, void (*func)(void*), bool isUser) {
 	newProcess->context = frame;
 
 	char buf[32];
-	itoa((uint64_t)func, buf, 16);
+	itoa((uint64_t)newProcess->context->rsp, buf, 16);
 	print("0x");
 	print(buf);
 	printChar('\n');
-	itoa((uint64_t)newProcess->context, buf, 16);
+	itoa((uint64_t)newProcess->context->rip, buf, 16);
 	print("0x");
 	print(buf);
 	printChar('\n');

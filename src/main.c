@@ -3,7 +3,6 @@
 #include <stddef.h>
 #include "flanterm/flanterm.h"
 #include "flanterm/flanterm_backends/fb.h"
-#include "gcc_functions.h"
 #include "limine.h"
 #include "cpu/gdt.h"
 #include "cpu/interrupts/idt.h"
@@ -123,12 +122,20 @@ void kpanic(InterruptFrame* frame) {
     print("\n\nUhh.. Something \x1b[1;31mBAD\x1b[0m happened...\n");
     print("There was a kernel panic, here's some error info.\n\n");
 
+    write_serial_string("\033[91mKERNEL PANIC\033[0m\n\r");
+
     print("Interrupt Info:\n");
     char itoaBuf[32];
     print("\t- ");
     print(exceptionLabels[frame->int_no]);
     print("\n\t- Error Code: 0x");
     print(itoa(frame->err_code, itoaBuf, 16));
+
+    write_serial_string(exceptionLabels[frame->int_no]);
+    write_serial_string("\n\r");
+    write_serial_string("Error code: ");
+    write_serial_string(itoaBuf);
+    write_serial_string("\n\r");
 
     print("\n\nRegister Dump:\n");
 
