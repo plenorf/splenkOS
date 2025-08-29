@@ -235,8 +235,7 @@ void kmain(void) {
 
     // do setup
     ok("Starting task scheduler...");
-    Scheduler mainScheduler;
-    scheduler = &mainScheduler;
+    scheduler = kmalloc(sizeof(Scheduler));
 
     Process *idleProcess = kmalloc(sizeof(Process));
     initProcess(idleProcess, idle, false);
