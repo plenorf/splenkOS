@@ -18,6 +18,14 @@ To create a disk image, run: `./hdd.sh`
   
 And then run the OS with `./run.sh`  
 
+Alternatively, there is an experimental Dockerfile for building in a controlled environment. Run:
+
+```bash
+docker build -t splenkos .
+```
+
+It is still in progress, but can show you build errors.
+
 ## Commands
 There are a total 6 commands and these are
 `help`: Displays commands. Usage `time`
