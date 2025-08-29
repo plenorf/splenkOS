@@ -1,0 +1,1 @@
+make clean && make && ./iso.sh && ./run.sh
