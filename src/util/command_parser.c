@@ -44,7 +44,6 @@ void parseCommand(char *input, struct limine_framebuffer *framebuffer)
 				return;
 			}
 			int duration = atoi(durationStr);
-			char buf[32];
 			print("Sleeping for ");
 			print(durationStr);
 			print(" ms...");

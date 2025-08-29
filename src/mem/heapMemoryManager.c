@@ -66,7 +66,7 @@ void mm_dump(void) {
     while (curr) {
         char buf[64];
         print("[Block] ");
-        itoa(curr, buf, 10);
+        itoa((uintptr_t)curr, buf, 10);
         print(buf);
         print(" size=");
         itoa((unsigned)curr->size, buf, 10);
