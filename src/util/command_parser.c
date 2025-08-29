@@ -15,7 +15,7 @@ void parseCommand(char *input, struct limine_framebuffer *framebuffer)
 	{
 		if (strcmp(command, "help") == 0)
 		{
-			print("Available commands: help time sleep echo splenkfetch halt\n");
+			print("Available commands: help time sleep echo splenkfetch halt clear\n");
 		}
 		else if (strcmp(command, "echo") == 0)
 		{
@@ -57,6 +57,10 @@ void parseCommand(char *input, struct limine_framebuffer *framebuffer)
 			{
 				asm("hlt");
 			}
+		}
+		else if (strcmp(command, "clear") == 0)
+		{
+			print("\x1b[2J\x1b[H");
 		}
 		else if (strcmp(command, "splenkfetch") == 0)
 		{
