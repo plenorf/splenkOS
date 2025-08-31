@@ -229,6 +229,18 @@ void kmain(void) {
     // setup flanterm
     init_console(framebuffer);
 
+    size_t total_ram = 0;
+if (memmap_request.response != NULL) {
+    for (uint64_t i = 0; i < memmap_request.response->entry_count; i++) {
+        struct limine_memmap_entry *entry = memmap_request.response->entries[i];
+        if (entry->type == LIMINE_MEMMAP_USABLE) {
+            total_ram += entry->length;
+        }
+    }
+}
+
+
+
     print("\n\033[2m[===============    BOOT LOG    ===============]\033[22m\n\n");
 
     ok("Setting up memory manager...");
@@ -274,6 +286,13 @@ void kmain(void) {
     ok("Remapping PIC...");
     PIC_remap(PIC1, PIC1);
     __asm__ volatile ("sti"); // set the interrupt flag
+
+    char ramBuf[32];
+    itoa(total_ram / (1024 * 1024), ramBuf, 10);
+    print("RAM usage: ");
+    print(ramBuf);
+    print(" MB\n");
+
     
 
     print("\n\033[2m[=============== BOOT COMPLETE  ===============]\033[22m\n\n");
