@@ -229,12 +229,12 @@ void kmain(void) {
     // setup flanterm
     init_console(framebuffer);
 
-/*   size_t total_ram = 0;
-if (memmap_request.response != NULL) {
-    for (uint64_t i = 0; i < memmap_request.response->entry_count; i++) {
-        struct limine_memmap_entry *entry = memmap_request.response->entries[i];
-        if (entry->type == LIMINE_MEMMAP_USABLE) {
-            total_ram += entry->length;
+/*   size_t total_ram = 0; //first make sure we dont have extra ram
+if (memmap_request.response != NULL) { // Just checking if we got a memory map
+    for (uint64_t i = 0; i < memmap_request.response->entry_count; i++) { // Loop through all the entries in the memory map horribly inefficient
+        struct limine_memmap_entry *entry = memmap_request.response->entries[i]; 
+        if (entry->type == LIMINE_MEMMAP_USABLE) { //what is usable
+            total_ram += entry->length; 
         }
     }
 }*/
