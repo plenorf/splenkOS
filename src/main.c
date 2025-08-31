@@ -47,10 +47,11 @@ static volatile struct limine_framebuffer_request framebuffer_request = {
 // Also this can be moved to any .c file as seen fit if we includ main.h or where ever the linine stuff is from
 
 __attribute__((used, section(".limine_requests")))
-static volatile struct limine_memmap_request memmap_request = {
+volatile struct limine_memmap_request memmap_request = {
     .id = LIMINE_MEMMAP_REQUEST,
     .revision = 0
 };
+
 
 
 // Finally, define the start and end markers for the Limine requests.
