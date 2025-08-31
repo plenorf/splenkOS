@@ -229,7 +229,7 @@ void kmain(void) {
     // setup flanterm
     init_console(framebuffer);
 
-    size_t total_ram = 0;
+/*   size_t total_ram = 0;
 if (memmap_request.response != NULL) {
     for (uint64_t i = 0; i < memmap_request.response->entry_count; i++) {
         struct limine_memmap_entry *entry = memmap_request.response->entries[i];
@@ -237,7 +237,7 @@ if (memmap_request.response != NULL) {
             total_ram += entry->length;
         }
     }
-}
+}*/
 
 
 
@@ -287,11 +287,11 @@ if (memmap_request.response != NULL) {
     PIC_remap(PIC1, PIC1);
     __asm__ volatile ("sti"); // set the interrupt flag
 
-    char ramBuf[32];
+    /*char ramBuf[32];
     itoa(total_ram / (1024 * 1024), ramBuf, 10);
     print("RAM usage: ");
     print(ramBuf);
-    print(" MB\n");
+    print(" MB\n");*/
 
     
 
