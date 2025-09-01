@@ -18,7 +18,7 @@ void parseCommand(char *input, struct limine_framebuffer *framebuffer)
 	{
 		if (strcmp(command, "help") == 0)
 		{
-			print("Available commands: help time sleep echo splenkfetch halt clear\n");
+			print("Available commands: help time sleep echo splenkfetch halt clear memtest\n");
 		}
 		else if (strcmp(command, "echo") == 0)
 		{
@@ -102,6 +102,80 @@ void parseCommand(char *input, struct limine_framebuffer *framebuffer)
 			print("\n\033[1;92m@@@@@@@@@     @             @@@@@@@           \033[0m");
 			print("\n\033[1;92m     @ @@   @@                                \033[0m");
 			print("\n\033[1;92m        @@@@@                                 \033[0m\n");
+		}
+		else if (strcmp(command, "memtest") == 0)
+		{
+			print("Testing kmalloc...\n");
+			void *ptr1 = kmalloc(16);
+			void *ptr2 = kmalloc(32);
+			void *ptr3 = kmalloc(64);
+			void *ptr4 = kmalloc(128);
+			void *ptr5 = kmalloc(256);
+			void *ptr6 = kmalloc(512);
+			void *ptr7 = kmalloc(1024);
+			void *ptr8 = kmalloc(2048);
+			void *ptr9 = kmalloc(4096);
+			print("Allocated 16 bytes at ");
+			print(itoa((int)(uint64_t)ptr1, (char *)kmalloc(12), 16));
+			print("\nAllocated 32 bytes at ");
+			print(itoa((int)(uint64_t)ptr2, (char *)kmalloc(12), 16));
+			print("\nAllocated 64 bytes at ");
+			print(itoa((int)(uint64_t)ptr3, (char *)kmalloc(12), 16));
+			print("\nAllocated 128 bytes at ");
+			print(itoa((int)(uint64_t)ptr4, (char *)kmalloc(12), 16));
+			print("\nAllocated 256 bytes at ");
+			print(itoa((int)(uint64_t)ptr5, (char *)kmalloc(12), 16));
+			print("\nAllocated 512 bytes at ");
+			print(itoa((int)(uint64_t)ptr6, (char *)kmalloc(12), 16));
+			print("\nAllocated 1024 bytes at ");
+			print(itoa((int)(uint64_t)ptr7, (char *)kmalloc(12), 16));
+			print("\nAllocated 2048 bytes at ");
+			print(itoa((int)(uint64_t)ptr8, (char *)kmalloc(12), 16));
+			print("\nAllocated 4096 bytes at ");
+			print(itoa((int)(uint64_t)ptr9, (char *)kmalloc(12), 16));
+			printChar('\n');
+			print("Filling memory with pattern 0xAA...\n");
+			memset(ptr1, 0xAA, 16);
+			memset(ptr2, 0xAA, 32);
+			memset(ptr3, 0xAA, 64);
+			memset(ptr4, 0xAA, 128);
+			memset(ptr5, 0xAA, 256);
+			memset(ptr6, 0xAA, 512);
+			memset(ptr7, 0xAA, 1024);
+			memset(ptr8, 0xAA, 2048);
+			memset(ptr9, 0xAA, 4096);
+			print("Memory filled.\n");
+			print("Emptying Memory...\n");
+			memset(ptr1, 0x00, 16);
+			memset(ptr2, 0x00, 32);
+			memset(ptr3, 0x00, 64);
+			memset(ptr4, 0x00, 128);
+			memset(ptr5, 0x00, 256);
+			memset(ptr6, 0x00, 512);
+			memset(ptr7, 0x00, 1024);
+			memset(ptr8, 0x00, 2048);
+			memset(ptr9, 0x00, 4096);
+			print("Emptied memory at ");
+			print(itoa((int)(uint64_t)ptr1, (char *)kmalloc(12), 16));
+			print("\nEmptied memory at ");
+			print(itoa((int)(uint64_t)ptr2, (char *)kmalloc(12), 16));
+			print("\nEmptied memory at ");
+			print(itoa((int)(uint64_t)ptr3, (char *)kmalloc(12), 16));
+			print("\nEmptied memory at ");
+			print(itoa((int)(uint64_t)ptr4, (char *)kmalloc(12), 16));
+			print("\nEmptied memory at ");
+			print(itoa((int)(uint64_t)ptr5, (char *)kmalloc(12), 16));
+			print("\nEmptied memory at ");
+			print(itoa((int)(uint64_t)ptr6, (char *)kmalloc(12), 16));
+			print("\nEmptied memory at ");
+			print(itoa((int)(uint64_t)ptr7, (char *)kmalloc(12), 16));
+			print("\nEmptied memory at ");
+			print(itoa((int)(uint64_t)ptr8, (char *)kmalloc(12), 16));
+			print("\nEmptied memory at ");
+			print(itoa((int)(uint64_t)ptr9, (char *)kmalloc(12), 16));
+			print("\n");
+			print("Memory emptied.\n");
+			print("Memory test complete.\n");
 		}
 		else
 		{
