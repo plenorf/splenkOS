@@ -3,6 +3,7 @@
 #include "logging.h"
 // #include "../drivers/timer.h"
 #include "mem/mem.h"
+#include "src/main.h"
 
 // this is terrible coding right here but it'll be removed later.
 // its gonna be mainly used for testing features of the OS without
@@ -85,6 +86,11 @@ void parseCommand(char *input, struct limine_framebuffer *framebuffer)
 			strcat(finalBuf, resYBuffer);
 			print(finalBuf);
 			print("\n\033[1;92m    @@                              @@        \033[0m");
+			char ramBuf[32];
+    		itoa(total_ram / (1024 * 1024), ramBuf, 10);
+    		print("RAM:");
+    		print(ramBuf);
+    		print(" MB\n");
 			print("\n\033[1;92m   @@                                @@@      \033[0m");
 			print("\n\033[1;92m  @@                                   @@     \033[0m");
 			print("\n\033[1;92m  @@           @              @@        @     \033[0m");

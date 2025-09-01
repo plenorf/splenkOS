@@ -45,13 +45,13 @@ static volatile struct limine_framebuffer_request framebuffer_request = {
 // And also add RAM usage stats to splenkfetch
 // We still need an actucal fuction to call to get the memory map but this is just the request
 // Also this can be moved to any .c file as seen fit if we includ main.h or where ever the linine stuff is from
-/*
+
 __attribute__((used, section(".limine_requests")))
 volatile struct limine_memmap_request memmap_request = {
     .id = LIMINE_MEMMAP_REQUEST,
     .revision = 0
 };
-*/
+
 
 //Having issues compiling so gonna disable someone please fix this
 
@@ -232,7 +232,7 @@ void kmain(void) {
     // setup flanterm
     init_console(framebuffer);
 
-/*   size_t total_ram = 0; //first make sure we dont have extra ram
+   size_t total_ram = 0; //first make sure we dont have extra ram
 if (memmap_request.response != NULL) { // Just checking if we got a memory map
     for (uint64_t i = 0; i < memmap_request.response->entry_count; i++) { // Loop through all the entries in the memory map horribly inefficient
         struct limine_memmap_entry *entry = memmap_request.response->entries[i]; 
@@ -240,7 +240,7 @@ if (memmap_request.response != NULL) { // Just checking if we got a memory map
             total_ram += entry->length; 
         }
     }
-}*/
+}
 
 
 
@@ -290,11 +290,11 @@ if (memmap_request.response != NULL) { // Just checking if we got a memory map
     PIC_remap(PIC1, PIC1);
     __asm__ volatile ("sti"); // set the interrupt flag
 
-    /*char ramBuf[32];
+    char ramBuf[32];
     itoa(total_ram / (1024 * 1024), ramBuf, 10);
-    print("RAM usage: ");
+    print("RAM:");
     print(ramBuf);
-    print(" MB\n");*/
+    print(" MB\n");
 
     
 
