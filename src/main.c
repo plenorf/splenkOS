@@ -40,6 +40,23 @@ static volatile struct limine_framebuffer_request framebuffer_request = {
     .revision = 0
 };
 
+// Limine pretty please give me memory map :D
+// But what this does is it make limine give us a memory map so we can see what memory is free and what memory is used
+// This allows us to do dynamic memory allocation and stuff like that
+// And also add RAM usage stats to splenkfetch
+// We still need an actucal fuction to call to get the memory map but this is just the request
+// Also this can be moved to any .c file as seen fit if we includ main.h or where ever the linine stuff is from
+
+__attribute__((used, section(".limine_requests")))
+volatile struct limine_memmap_request memmap_request = {
+    .id = LIMINE_MEMMAP_REQUEST,
+    .revision = 0
+};
+
+
+//Having issues compiling so gonna disable someone please fix this
+
+
 // Finally, define the start and end markers for the Limine requests.
 // These can also be moved anywhere, to any .c file, as seen fit.
 
@@ -216,6 +233,18 @@ void kmain(void) {
     // setup flanterm
     init_console(framebuffer);
 
+   size_t total_ram = 0; //first make sure we dont have extra ram
+if (memmap_request.response != NULL) { // Just checking if we got a memory map
+    for (uint64_t i = 0; i < memmap_request.response->entry_count; i++) { // Loop through all the entries in the memory map horribly inefficient
+        struct limine_memmap_entry *entry = memmap_request.response->entries[i]; 
+        if (entry->type == LIMINE_MEMMAP_USABLE) { //what is usable
+            total_ram += entry->length; 
+        }
+    }
+}
+
+
+
     print("\n\033[2m[===============    BOOT LOG    ===============]\033[22m\n\n");
 
     ok("Setting up memory manager...");
@@ -291,6 +320,13 @@ void kmain(void) {
     ok("Remapping PIC...");
     PIC_remap(PIC1, PIC1);
     __asm__ volatile ("sti"); // set the interrupt flag
+
+    char ramBuf[32];
+    itoa(total_ram / (1024 * 1024), ramBuf, 10);
+    print("RAM:");
+    print(ramBuf);
+    print(" MB\n");
+
     
 
     print("\n\033[2m[=============== BOOT COMPLETE  ===============]\033[22m\n\n");
