@@ -12,6 +12,7 @@
 #include "hardware/pci.h"
 #include "scheduler.h"
 #include "mem/mem.h"
+#include "disk/ahci.h"
 
 #include "drivers/timer.h"
 #include "drivers/keyboard.h"
@@ -245,6 +246,36 @@ void kmain(void) {
     Process *testProcess = kmalloc(sizeof(Process));
     initProcess(testProcess, test, false);
     scheduler->currentProcess->next = testProcess;
+
+    ok("Setting up SATA...");
+    // interrupt 14
+    ATA ata0Master = {
+        .portBase = 0x1F0,
+        .master = true,
+        .bytesPerSector = 512
+    };
+    identifyAHCI(ata0Master);
+    ATA ata0Slave = {
+        .portBase = 0x1F0,
+        .master = false,
+        .bytesPerSector = 512
+    };
+    identifyAHCI(ata0Slave);
+    // interrupt 15
+    ATA ata1Master = {
+        .portBase = 0x170,
+        .master = true,
+        .bytesPerSector = 512
+    };
+    identifyAHCI(ata0Master);
+    ATA ata1Slave = {
+        .portBase = 0x170,
+        .master = false,
+        .bytesPerSector = 512
+    };
+    identifyAHCI(ata0Slave);
+    // third: 0x1E8
+    // fourth: 0x158
 
     ok("Detecting hardware...");
     select_drivers();
