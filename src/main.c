@@ -307,7 +307,11 @@ void kmain(void)
     ok("Remapping PIC...");
     PIC_remap(PIC1, PIC1);
     __asm__ volatile("sti"); // set the interrupt flag
-
+    /*
+    Converts the total RAM size from bytes to megabytes, that is put into ramBuf.
+    and prints the available RAM in megabytes to the output.
+    The total RAM is divided by 1024 twice to convert bytes to megabytes.
+    */
     char ramBuf[32];
     itoa(total_ram / (1024 * 1024), ramBuf, 10);
     print("RAM Available:");

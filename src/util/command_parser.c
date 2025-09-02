@@ -177,6 +177,23 @@ void parseCommand(char *input, struct limine_framebuffer *framebuffer)
 			print("Memory emptied.\n");
 			print("Memory test complete.\n");
 		}
+
+		else if (strcmp(command, "add") == 0)
+		{
+			char *num1Str = strtok(NULL, " ");
+			char *num2Str = strtok(NULL, " ");
+			if (num1Str == NULL || num2Str == NULL) {
+				print("Usage: add <num1> <num2>\n");
+				return;
+			}
+			int num1 = atoi(num1Str);
+			int num2 = atoi(num2Str);
+			char resultBuf[32];
+			print("Result: ");
+			print(itoa(num1 + num2, resultBuf, 10));
+			printChar('\n');
+		}
+		
 		else
 		{
 			print("Unknown command.\n");
