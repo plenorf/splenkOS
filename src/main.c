@@ -310,9 +310,20 @@ void kmain(void)
 
     char ramBuf[32];
     itoa(total_ram / (1024 * 1024), ramBuf, 10);
-    print("RAM:");
+    print("RAM Available:");
     print(ramBuf);
     print(" MB\n");
+
+    /*
+    print("Ram Total: ");
+    print(total_ram);
+    print(" MB\n") */
+    // This is causing and issue that I cant debug. Max or spook you fix? Yes you fix.
+    // What this is meant to do is call a function that does exist
+    // This function is defined from line 235 to line 243 total_ram
+    // So yes spook it does exist dont panic
+    
+
 
     print("\n\033[2m[=============== BOOT COMPLETE  ===============]\033[22m\n\n");
 
