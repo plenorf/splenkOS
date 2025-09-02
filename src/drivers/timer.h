@@ -50,7 +50,7 @@ static InterruptFrame* timer_interrupt_handler(InterruptFrame* frame) {
 		// running simultaneously, since our clock is running
 		// at 1KHz, each program gets 1 ms of CPU time per tick,
 		// this is called a quantum.
-		//frame = schedule(scheduler, frame);
+		frame = schedule(scheduler, frame);
 
 		/*print("AFTER:\n");
 		print("INT: 0x");

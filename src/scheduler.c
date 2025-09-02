@@ -27,7 +27,7 @@ Process* initProcess(Process* newProcess, void (*func)(void*), bool isUser) {
 	newProcess->next = NULL;
 
 	char *stack = kmalloc(4096);
-	memset(stack, 0, sizeof(stack));
+	memset(stack, 0, 4096);
 
 	InterruptFrame *frame = kmalloc(sizeof(InterruptFrame));
 	*frame = (InterruptFrame){
@@ -38,7 +38,7 @@ Process* initProcess(Process* newProcess, void (*func)(void*), bool isUser) {
 		.rsi = 0,
 		.rflags = 0x202,
 		.cs = GDT_CODE_SEGMENT,
-		.rsp = ((uint64_t)stack + sizeof(stack)),
+		.rsp = ((uint64_t)stack + 4096),
 		.rax = 1,
 		.rcx = 0,
 		.rdx = 0,
