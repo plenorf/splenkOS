@@ -60,6 +60,5 @@ Process* initProcess(Process* newProcess, void (*func)(void*), bool isUser) {
 	printChar('\n');
 	print("-----------\n");
 
-	asm volatile ("sti");
 	return newProcess;
 }
