@@ -13,6 +13,7 @@
 #include "scheduler.h"
 #include "mem/mem.h"
 #include "disk/ahci.h"
+#include "gui/graphics.h"
 
 #include "drivers/timer.h"
 #include "drivers/keyboard.h"
@@ -243,6 +244,17 @@ void kmain(void)
     heap_init(heap_area, sizeof(heap_area));
     mm_dump();
 
+    /*
+    Converts the total RAM size from bytes to megabytes, that is put into ramBuf.
+    and prints the available RAM in megabytes to the output.
+    The total RAM is divided by 1024 twice to convert bytes to megabytes.
+    */
+    char ramBuf[32];
+    itoa(total_ram / (1024 * 1024), ramBuf, 10);
+    print("RAM Available: ");
+    print(ramBuf);
+    print("Mb\n");
+
     // print out framebuffer resolution
     char xBuffer[8];
     char yBuffer[8];
@@ -307,16 +319,6 @@ void kmain(void)
     ok("Remapping PIC...");
     PIC_remap(PIC1, PIC1);
     __asm__ volatile("sti"); // set the interrupt flag
-    /*
-    Converts the total RAM size from bytes to megabytes, that is put into ramBuf.
-    and prints the available RAM in megabytes to the output.
-    The total RAM is divided by 1024 twice to convert bytes to megabytes.
-    */
-    char ramBuf[32];
-    itoa(total_ram / (1024 * 1024), ramBuf, 10);
-    print("RAM Available:");
-    print(ramBuf);
-    print(" MB\n");
 
     /*
     print("Ram Total: ");
@@ -327,26 +329,17 @@ void kmain(void)
     // This function is defined from line 235 to line 243 total_ram
     // So yes spook it does exist dont panic
     
+    ok("Setting up graphics...");
+    clear_screen(COLOUR_BLACK, framebuffer);
 
+    Point pos = {20, 20};
+    Size size = {100, 100};
+    draw_filled_rect(pos, size, COLOUR_RED, framebuffer);
 
-    print("\n\033[2m[=============== BOOT COMPLETE  ===============]\033[22m\n\n");
-
-    /*print("Welcome to SplenkOS!\n");
-    print("Type \"help\" for a list of commands.\n\n");
-
-    while (1)
+    for (;;)
     {
-        print("> ");
-
-        char userInput[255];
-        input(userInput);
-
-        parseCommand(userInput, framebuffer);
-
-        userInput[0] = '\0';
-
-        printChar('\n');
-    }*/
+    }
+    
 
     warn("Kernel has run out of work! Halting the computer...");
 
