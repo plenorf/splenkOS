@@ -332,10 +332,6 @@ void kmain(void)
     ok("Setting up graphics...");
     clear_screen(COLOUR_BLACK, framebuffer);
 
-    Point pos = {20, 20};
-    Size size = {100, 100};
-    draw_filled_rect(pos, size, COLOUR_RED, framebuffer);
-
     for (;;)
     {
     }
