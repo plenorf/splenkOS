@@ -255,7 +255,7 @@ void kmain(void)
     info(finalBuf);
 
     // do setup
-    ok("Starting task scheduler...");
+    /*ok("Starting task scheduler...");
     scheduler = kmalloc(sizeof(Scheduler));
 
     Process *idleProcess = kmalloc(sizeof(Process));
@@ -265,9 +265,9 @@ void kmain(void)
 
     Process *testProcess = kmalloc(sizeof(Process));
     initProcess(testProcess, test, false);
-    scheduler->currentProcess->next = testProcess;
+    scheduler->currentProcess->next = testProcess;*/
 
-    ok("Setting up SATA...");
+    /*ok("Setting up SATA...");
     // interrupt 14
     ATA ata0Master = {
         .portBase = 0x1F0,
@@ -289,7 +289,7 @@ void kmain(void)
         .portBase = 0x170,
         .master = false,
         .bytesPerSector = 512};
-    identifyAHCI(ata0Slave);
+    identifyAHCI(ata0Slave);*/
     // third: 0x1E8
     // fourth: 0x158
 
@@ -331,7 +331,7 @@ void kmain(void)
 
     print("\n\033[2m[=============== BOOT COMPLETE  ===============]\033[22m\n\n");
 
-    print("Welcome to SplenkOS!\n");
+    /*print("Welcome to SplenkOS!\n");
     print("Type \"help\" for a list of commands.\n\n");
 
     while (1)
@@ -346,7 +346,7 @@ void kmain(void)
         userInput[0] = '\0';
 
         printChar('\n');
-    }
+    }*/
 
     warn("Kernel has run out of work! Halting the computer...");
 
