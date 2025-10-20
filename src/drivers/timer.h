@@ -102,6 +102,9 @@ static int timer_init() {
     outb(PIT_CHANNEL0, divisor >> 8);   // High byte
 
 	register_interrupt_handler(0x20, timer_interrupt_handler);
+
+	ok("timer init success.");
+
 	return 0;
 }
 

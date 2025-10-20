@@ -320,8 +320,7 @@ void kmain(void)
     ok("Initialising IDT...");
     idt_init();
     ok("Remapping PIC...");
-    PIC_remap(PIC1, PIC1);
-    __asm__ volatile("sti"); // set the interrupt flag
+    PIC_remap(PIC1, PIC2);
 
     /*
     print("Ram Total: ");
@@ -337,6 +336,8 @@ void kmain(void)
     
     ok("Setting up graphics...");
     clear_screen(COLOUR_BLACK, framebuffer);
+    clear_screen(COLOUR_DARK_CYAN, framebuffer);
+    draw_rounded_rect((Point){100, 100}, (Size){150, 150}, 16, COLOUR_WHITE, framebuffer);
 
     /*while (1)
     {
