@@ -69,7 +69,6 @@ static int mouse_init() {
     status |= 0x02; // enable IRQ12 for the second port
 
     outb(MOUSE_COMMAND, 0x60); // command: write config
-	mouse_wait(1);
     outb(MOUSE_DATA, status); // send the new configuration
 
     outb(MOUSE_COMMAND, 0xD4); // next byte goes to mouse

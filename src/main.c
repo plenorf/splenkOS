@@ -331,13 +331,13 @@ void kmain(void)
     // This function is defined from line 235 to line 243 total_ram
     // So yes spook it does exist dont panic
 
-    print("\n\n\x1b[1mBoot complete! Press any key to start the desktop.\x1b[0m\n");
+    /*print("\n\n\x1b[1mBoot complete! Press any key to start the desktop.\x1b[0m\n");
     read_char();
     
     ok("Setting up graphics...");
     clear_screen(COLOUR_BLACK, framebuffer);
     clear_screen(COLOUR_DARK_CYAN, framebuffer);
-    draw_rounded_rect((Point){100, 100}, (Size){150, 150}, 16, COLOUR_WHITE, framebuffer);
+    draw_rounded_rect((Point){100, 100}, (Size){150, 150}, 16, COLOUR_WHITE, framebuffer);*/
 
     /*while (1)
     {

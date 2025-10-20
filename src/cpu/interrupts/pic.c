@@ -13,27 +13,29 @@ void PIC_sendEOI(uint8_t irq)
 
 void PIC_remap(int offset1, int offset2)
 {
+    __asm__ __volatile__("cli");
+    unsigned char mask = inb(PIC1_DATA);
+    mask &= ~(1 << 0);
+    outb(0x21, mask);
+
+    unsigned char a1 = inb(PIC1_DATA);
+    unsigned char a2 = inb(PIC2_DATA);
+
     outb(PIC1_COMMAND, ICW1_INIT | ICW1_ICW4);
-    io_wait();
     outb(PIC2_COMMAND, ICW1_INIT | ICW1_ICW4);
-    io_wait();
+
     outb(PIC1_DATA, offset1);
-    io_wait();
     outb(PIC2_DATA, offset2);
-    io_wait();
-    outb(PIC1_DATA, 4);
-    io_wait();
-    outb(PIC2_DATA, 2);
-    io_wait();
-    //This is a lot of waiting
+
+    outb(PIC1_DATA, 0x04);
+    outb(PIC2_DATA, 0x02);
 
     outb(PIC1_DATA, ICW4_8086);
-    io_wait();
     outb(PIC2_DATA, ICW4_8086);
-    io_wait();
 
-    outb(PIC1_DATA, 0);
-    outb(PIC2_DATA, 0);
+    outb(PIC1_DATA, a1);
+    outb(PIC2_DATA, a2);
+    __asm__ __volatile__("sti");
 }
 
 // Disabling the PIC cause I was told to do so
