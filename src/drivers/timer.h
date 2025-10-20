@@ -106,7 +106,7 @@ static int timer_init() {
 }
 
 static Driver timerDriver = {
-	.name = "Timer",
+	.name = "PITTimer",
 	.init = timer_init,
 	.shutdown = NULL
 };

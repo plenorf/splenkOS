@@ -67,7 +67,7 @@ void draw_filled_rect(Point position, Size size, Colour colour, struct limine_fr
 	}
 }
 
-void draw_circle(struct limine_framebuffer *buffer, Point center, int radius, Colour colour)
+void draw_circle(Point center, int radius, Colour colour, struct limine_framebuffer *buffer)
 {
     int x = 0;
     int y = radius;
@@ -99,7 +99,7 @@ void draw_circle(struct limine_framebuffer *buffer, Point center, int radius, Co
     }
 }
 
-void draw_filled_circle(struct limine_framebuffer *buffer, Point center, int radius, Colour colour) {
+void draw_filled_circle(Point center, int radius, Colour colour, struct limine_framebuffer *buffer) {
 	int x = 0;
 	int y = radius;
 	int d = 3 - 2 * radius;
@@ -125,4 +125,16 @@ void draw_filled_circle(struct limine_framebuffer *buffer, Point center, int rad
 		}
 		x++;
 	}
+}
+
+void draw_rounded_rect(Point position, Size size, int cornerRadius, Colour colour, struct limine_framebuffer *buffer) {
+	draw_filled_rect((Point){position.x + cornerRadius, position.y}, (Size){size.width - 2 * cornerRadius, size.height}, colour, buffer);
+
+	draw_filled_rect((Point){position.x, position.y + cornerRadius}, (Size){cornerRadius, size.height - 2 * cornerRadius}, colour, buffer);
+	draw_filled_rect((Point){position.x + size.width - cornerRadius, position.y + cornerRadius}, (Size){cornerRadius, size.height - 2 * cornerRadius}, colour, buffer);
+
+	draw_filled_circle((Point){position.x + cornerRadius, position.y + cornerRadius}, cornerRadius, colour, buffer); // top left
+	draw_filled_circle((Point){position.x + size.width - cornerRadius - 1, position.y + cornerRadius}, cornerRadius, colour, buffer); // top right
+	draw_filled_circle((Point){position.x + cornerRadius, position.y + size.height - cornerRadius - 1}, cornerRadius, colour, buffer); // bottom left
+	draw_filled_circle((Point){position.x + size.width - cornerRadius - 1, position.y + size.height - cornerRadius - 1}, cornerRadius, colour, buffer); // bottom right
 }

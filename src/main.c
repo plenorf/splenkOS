@@ -13,10 +13,12 @@
 #include "scheduler.h"
 #include "mem/mem.h"
 #include "disk/ahci.h"
+
 #include "gui/graphics.h"
 
 #include "drivers/timer.h"
 #include "drivers/keyboard.h"
+#include "drivers/mouse.h"
 
 #define MIN_LOG_LEVEL DEBUG
 #include "util/logging.h"
@@ -310,6 +312,7 @@ void kmain(void)
     ok("Starting drivers...");
     register_driver(timerDriver);
     register_driver(keyboardDriver);
+    register_driver(mouseDriver);
     start_drivers();
 
     ok("Initialising GDT...");
@@ -328,14 +331,28 @@ void kmain(void)
     // What this is meant to do is call a function that does exist
     // This function is defined from line 235 to line 243 total_ram
     // So yes spook it does exist dont panic
+
+    print("\n\n\x1b[1mBoot complete! Press any key to start the desktop.\x1b[0m\n");
+    read_char();
     
     ok("Setting up graphics...");
     clear_screen(COLOUR_BLACK, framebuffer);
 
-    for (;;)
+    /*while (1)
     {
-    }
-    
+        print("> ");
+
+        char userInput[255];
+        input(userInput);
+
+        parseCommand(userInput, framebuffer);
+
+        userInput[0] = '\0';
+
+        printChar('\n');
+    }*/
+
+    for(;;){}
 
     warn("Kernel has run out of work! Halting the computer...");
 

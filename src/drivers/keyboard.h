@@ -37,9 +37,15 @@ char read_char()
 
     while (run)
     {
-
-        if (inb(0x64) & 0x1)
+        uint8_t status = inb(0x64);
+        if (status & 0x1)
         {
+            // THE MOUSE IS TRYNA FEED US PROPOGANDA, KILL HIM
+            if (status & 0x20) {
+                (void)inb(0x60);
+                continue;
+            }
+
             uint8_t scancode = inb(0x60);
             if (scancode == 0x2A && !isShift)
                 isShift = true;
@@ -103,6 +109,6 @@ char *input(char *out)
 }
 
 static Driver keyboardDriver = {
-    .name = "Keyboard",
+    .name = "PS2Keyboard",
     .init = keyboard_init,
     .shutdown = NULL};
