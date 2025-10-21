@@ -1,5 +1,6 @@
 #include "pic.h"
 #include "../io.h"
+#include "../../util/logging.h"
 
 void PIC_sendEOI(uint8_t irq)
 {
@@ -13,11 +14,6 @@ void PIC_sendEOI(uint8_t irq)
 
 void PIC_remap(int offset1, int offset2)
 {
-    __asm__ __volatile__("cli");
-    unsigned char mask = inb(PIC1_DATA);
-    mask &= ~(1 << 0);
-    outb(0x21, mask);
-
     unsigned char a1 = inb(PIC1_DATA);
     unsigned char a2 = inb(PIC2_DATA);
 
@@ -35,7 +31,6 @@ void PIC_remap(int offset1, int offset2)
 
     outb(PIC1_DATA, a1);
     outb(PIC2_DATA, a2);
-    __asm__ __volatile__("sti");
 }
 
 // Disabling the PIC cause I was told to do so
@@ -46,30 +41,23 @@ void pic_disable(void) {
 }
 //Something about Masking idk
 
-void IRQ_mask(uint8_t IRQline) {
+void PIC_set_mask(uint8_t irq, bool masked)
+{
     uint16_t port;
     uint8_t value;
 
-    if (IRQline < 8) {
+    if (irq < 8) {
         port = PIC1_DATA;
     } else {
         port = PIC2_DATA;
-        IRQline -= 8;
+        irq -= 8;
     }
-    value = inb(port) | (1 << IRQline);
-    outb(port, value);
-}
-void IRQ_clear_mask(uint8_t IRQline) {
-    uint16_t port;
-    uint8_t value;
 
-    if (IRQline < 8) {
-        port = PIC1_DATA;
-    } else {
-        port = PIC2_DATA;
-        IRQline -= 8;
-    }
-    value = inb(port) & ~(1 << IRQline);
+    value = inb(port);
+    if (masked)
+        value |= (1 << irq);
+    else
+        value &= ~(1 << irq);
     outb(port, value);
 }
 

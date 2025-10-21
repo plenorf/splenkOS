@@ -321,7 +321,8 @@ void kmain(void)
     idt_init();
     ok("Remapping PIC...");
     PIC_remap(PIC1, PIC2);
-
+    __asm__ __volatile__("sti");
+    
     /*
     print("Ram Total: ");
     print(total_ram);
@@ -353,7 +354,7 @@ void kmain(void)
         printChar('\n');
     }*/
 
-    for(;;){}
+    for (;;){}
 
     warn("Kernel has run out of work! Halting the computer...");
 

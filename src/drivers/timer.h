@@ -2,6 +2,7 @@
 #define TIMER_DRIVER_H
 #include "../hardware/driver.h"
 #include "../cpu/interrupts/irq.h"
+#include "../cpu/interrupts/pic.h"
 #include "../util/logging.h"
 #include "../util/serial.h"
 #include "../libc/string.h"
@@ -78,6 +79,8 @@ static InterruptFrame* timer_interrupt_handler(InterruptFrame* frame) {
 		
 	}
 
+	PIC_sendEOI(frame->int_no-0x20); // Send End of Interrupt signal to PIC
+
 	return frame;
 }
 
@@ -102,8 +105,7 @@ static int timer_init() {
     outb(PIT_CHANNEL0, divisor >> 8);   // High byte
 
 	register_interrupt_handler(0x20, timer_interrupt_handler);
-
-	ok("timer init success.");
+	PIC_set_mask(0, true);
 
 	return 0;
 }

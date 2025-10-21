@@ -2,15 +2,15 @@
 
 #pragma once
 #include <stdint.h>
+#include <stdbool.h>
 
 
-#define PIC1    0x20
-#define PIC2    0x28
-
-#define PIC1_COMMAND 0x20
-#define PIC1_DATA    0x21
-#define PIC2_COMMAND 0xA0
-#define PIC2_DATA    0xA1
+#define PIC1            0x20                // Master PIC address
+#define PIC2            0xA0                // Slave PIC address
+#define PIC1_COMMAND    (PIC1)         // Command address for master PIC
+#define PIC2_COMMAND    (PIC2)         // Command address for slave PIC
+#define PIC1_DATA       (PIC1)+1       // Data address for master PIC
+#define PIC2_DATA       (PIC2)+1       // Data address for slave PIC
 #define PIC_EOI 0x20
 
 #define ICW1_ICW4 0x01
@@ -31,8 +31,7 @@
 void PIC_sendEOI(uint8_t irq);
 void PIC_remap(int offset1, int offset2);
 void pic_disable(void);
-void IRQ_mask(uint8_t IRQline);
-void IRQ_clear_mask(uint8_t IRQline);
+void PIC_set_mask(uint8_t irq, bool masked);
 uint16_t __pic_get_irq_reg(int ocw3);
 uint16_t PIC_get_irr(void);
 uint16_t pic_get_isr(void);

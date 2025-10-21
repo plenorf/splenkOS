@@ -9,19 +9,21 @@
 #define MOUSE_COMMAND 0x64
 #define MOUSE_IRQ 0x2C
 
-static InterruptFrame* mouse_interrupt_handler(InterruptFrame* frame) {
-	debug("MOUSE INTERRUPT");
-	return frame;
+static InterruptFrame *mouse_interrupt_handler(InterruptFrame *frame)
+{
+  uint8_t data = inb(MOUSE_DATA);
+  print("MOUSE INTERRUPT\n");
+  return frame;
 }
 
-inline void mouse_wait(uint8_t a_type) //unsigned char
+inline void mouse_wait(uint8_t a_type) // unsigned char
 {
-  uint32_t _time_out=100000; //unsigned int
-  if(a_type==0)
+  uint32_t _time_out = 100000; // unsigned int
+  if (a_type == 0)
   {
-    while(_time_out--) //Data
+    while (_time_out--) // Data
     {
-      if((inb(0x64) & 1)==1)
+      if ((inb(0x64) & 1) == 1)
       {
         return;
       }
@@ -30,9 +32,9 @@ inline void mouse_wait(uint8_t a_type) //unsigned char
   }
   else
   {
-    while(_time_out--) //Signal
+    while (_time_out--) // Signal
     {
-      if((inb(0x64) & 2)==0)
+      if ((inb(0x64) & 2) == 0)
       {
         return;
       }
@@ -41,53 +43,61 @@ inline void mouse_wait(uint8_t a_type) //unsigned char
   }
 }
 
-inline void mouse_write(uint8_t a_write) //unsigned char
+inline void mouse_write(uint8_t a_write) // unsigned char
 {
-  //Wait to be able to send a command
+  // Wait to be able to send a command
   mouse_wait(1);
-  //Tell the mouse we are sending a command
+  // Tell the mouse we are sending a command
   outb(MOUSE_COMMAND, 0xD4);
-  //Wait for the final part
+  // Wait for the final part
   mouse_wait(1);
-  //Finally write
+  // Finally write
   outb(MOUSE_DATA, a_write);
 }
 
 uint8_t mouse_read()
 {
-  //Get's response from mouse
-  mouse_wait(0); 
+  // Get's response from mouse
+  mouse_wait(0);
   return inb(MOUSE_DATA);
 }
 
-static int mouse_init() {
-	register_interrupt_handler(MOUSE_IRQ, mouse_interrupt_handler);
-	outb(MOUSE_COMMAND, 0xA8); // enable 2nd PS2 port
-    outb(MOUSE_COMMAND, 0x20); // command: read config
+static int mouse_init()
+{
+  register_interrupt_handler(MOUSE_IRQ, mouse_interrupt_handler);
+  //PIC_set_mask(2, false);
+  PIC_set_mask(12, false);
+  
 
-    uint8_t status = inb(MOUSE_DATA); // read the config send back by the mouse
-    status |= 0x02; // enable IRQ12 for the second port
+  outb(MOUSE_COMMAND, 0xA8); // enable 2nd PS2 port
+  outb(MOUSE_COMMAND, 0x20); // command: read config
 
-    outb(MOUSE_COMMAND, 0x60); // command: write config
-    outb(MOUSE_DATA, status); // send the new configuration
+  uint8_t status = inb(MOUSE_DATA); // read the config send back by the mouse
+  status |= 0x02;                   // enable IRQ12 for the second port
 
-    outb(MOUSE_COMMAND, 0xD4); // next byte goes to mouse
-    outb(MOUSE_DATA, 0xF4); // enable data reporting
+  outb(MOUSE_COMMAND, 0x60); // command: write config
+  outb(MOUSE_DATA, status);  // send the new configuration
 
-    uint8_t ack = inb(MOUSE_DATA);
-    if (ack != 0xFA) {
-        // uhh....
-        error("mouse init error, mouse ACK was not 0xFA");
-        return 1;
-    }
+  mouse_write(0xF6); // reset defaults
+  (void)mouse_read();
 
-	ok("mouse init success");
+  //outb(MOUSE_COMMAND, 0xD4); // next byte goes to mouse
+  //outb(MOUSE_DATA, 0xF4);    // enable data reporting
 
-	return 0;
+  mouse_write(0xF4);
+
+  uint8_t ack = mouse_read();
+  if (ack != 0xFA)
+  {
+    // uhh....
+    error("mouse init error, mouse ACK was not 0xFA");
+    return 1;
+  }
+
+  return 0;
 }
 
 static Driver mouseDriver = {
-	.name = "PS2Mouse",
-	.init = mouse_init,
-	.shutdown = NULL
-};
+    .name = "PS2Mouse",
+    .init = mouse_init,
+    .shutdown = NULL};
